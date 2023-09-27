@@ -2,10 +2,61 @@
 
 ## TL;DR
 
+Init and run:
+
 ```sh
 go mod init example/hello
 echo package main > 'hello.go'
 go run .
+```
+
+Check a file or directory exists:
+
+```go
+import (
+    "fmt"
+    "os"
+)
+if _, err := os.Stat("/path/to/whatever"); os.IsNotExist(err) {
+	_ = fmt.Errorf("/path/to/whatever does not exist")
+}
+```
+
+Operate in a Git repository:
+
+```go
+import (
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/go-git/go-git/v5"
+)
+
+// Clone repositories.
+repo, err := git.PlainClone(
+    "/path/to/repo",
+    false,
+    &git.CloneOptions{
+        URL:      "https://github.com/user/repo",
+        Progress: os.Stdout,
+    })
+if err != nil {
+    _ = fmt.Errorf("failed cloning the repository: %w", err)
+}
+
+// Open existing repositories.
+repo, err := git.PlainOpen("/path/to/repo")
+if err != nil {
+    _ = fmt.Errorf("failed opening the repository: %w", err)
+}
+
+// Get the current branch name.
+currentBranch, err := repo.Head()
+if err != nil {
+    _ = fmt.Errorf("failed getting the current branch of the repository: %w", err)
+}
+log.Printf("current branch of the repository: %s", currentBranch.Name().Short())
 ```
 
 ## How it works
@@ -127,11 +178,19 @@ Constants can be character, string, boolean, or numeric values and **cannot** be
 
 - [Website]
 - [Tour]
+- [Go by example]
+- [Check if file or directory exists in Golang]
+- [How do you get the current branch name?]
 
 <!--
   References
   -->
 
 <!-- Upstream -->
-[website]: https://go.dev/doc/tutorial/getting-started
 [tour]: https://go.dev/tour/welcome/1
+[website]: https://go.dev/doc/tutorial/getting-started
+
+<!-- Others -->
+[check if file or directory exists in golang]: https://gist.github.com/mattes/d13e273314c3b3ade33f
+[go by example]: https://gobyexample.com
+[how do you get the current branch name?]: https://github.com/src-d/go-git/issues/1129

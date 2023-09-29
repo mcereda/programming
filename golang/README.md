@@ -1,65 +1,33 @@
 # Golang
 
-## TL;DR
+1. [How the language works](#how-the-language-works)
+1. [Working with files](#working-with-files)
+1. [Working with Git repositories](#working-with-git-repositories)
+1. [Non-default module repositories](#non-default-module-repositories)
+1. [Further readings](#further-readings)
+1. [Sources](#sources)
 
-Init and run:
+## TL;DR <!-- omit from toc -->
 
 ```sh
+# Init and run modules.
 go mod init example/hello
 echo package main > 'hello.go'
 go run .
+
+
+# Use repository proxies.
+GOPROXY='https://goproxy.io,https://proxy.golang.org,direct'
+
+# Use private repositories.
+GOPRIVATE='https://gorepo.example.com/path'
+
+# Use private proxies.
+GOPROXY='https://goproxy.example.com/path,https://proxy.golang.org,direct' \
+GOPRIVATE='https://goproxy.example.com/path'
 ```
 
-Check a file or directory exists:
-
-```go
-import (
-    "fmt"
-    "os"
-)
-if _, err := os.Stat("/path/to/whatever"); os.IsNotExist(err) {
-	_ = fmt.Errorf("/path/to/whatever does not exist")
-}
-```
-
-Operate in a Git repository:
-
-```go
-import (
-    "fmt"
-    "log"
-    "os"
-
-    "github.com/go-git/go-git/v5"
-)
-
-// Clone repositories.
-repo, err := git.PlainClone(
-    "/path/to/repo",
-    false,
-    &git.CloneOptions{
-        URL:      "https://github.com/user/repo",
-        Progress: os.Stdout,
-    })
-if err != nil {
-    _ = fmt.Errorf("failed cloning the repository: %w", err)
-}
-
-// Open existing repositories.
-repo, err := git.PlainOpen("/path/to/repo")
-if err != nil {
-    _ = fmt.Errorf("failed opening the repository: %w", err)
-}
-
-// Get the current branch name.
-currentBranch, err := repo.Head()
-if err != nil {
-    _ = fmt.Errorf("failed getting the current branch of the repository: %w", err)
-}
-log.Printf("current branch of the repository: %s", currentBranch.Name().Short())
-```
-
-## How it works
+## How the language works
 
 Go programs are made of _packages_ and start running from the _main_ package.
 
@@ -67,7 +35,13 @@ Go programs are made of _packages_ and start running from the _main_ package.
 package main
 ```
 
-External packages need to be _imported_ before use.<br/>
+External packages need to be _imported_ before use.
+
+```go
+import "fmt"
+import "math"
+```
+
 It is good style to use one factored (grouped) import statement instead of multiple single lines.
 
 ```go
@@ -76,27 +50,22 @@ import (
     "math"
 )
 ```
-```go
-import "fmt"
-import "math"
-```
-
-A var statement can be at package or function level. We see both in this example. 
 
 Names are _exported_ if they begin with a capital letter.<br/>
 Exported names can be called from outside the package they are defined in.
 
-Functions take zero or more _arguments_. and return any number of results.<br/>
-The argument type comes after its name. _Named_ parameters and return values sharing a type can use a shortened definition.<br/>
-In functions with named return values, the `return` statement without arguments returns the named return values. This is known as a "naked" return. 
+Functions take zero or more _arguments_ and return any number of results.<br/>
+The argument type comes after its name. _Named_ parameters and return values sharing a type can use a shortened definition.
 
 ```go
-func add(a int, b int) int {
-    return a + b
-}
-func swap(x, y string) (x, y string) {
-    return y, x
-}
+func add(a int, b int) int { return a + b }
+func swap_long(x string, y string) (string, string) { return y, x }
+func swap_shortened(x, y string) (x, y string) { return y, x }
+```
+
+In functions with named return values, the `return` statement without arguments returns the named return values. This is known as a "naked" return.
+
+```go
 func split(sum int) (x, y int) {
 	x = sum * 4 / 9
 	y = sum - x
@@ -105,8 +74,10 @@ func split(sum int) (x, y int) {
 ```
 
 The `var` statement declares a list of variables.<br/>
-Variables sharing their type can use the shortened definition.<br/>
-Declarations can include initializers (one per variable). In this case the initialized variable will take the type of the initializer.
+It can be used at the package or function level.
+
+Declarations can include initializers (one per variable). In this case the initialized variable will take the type of the initializer.<br/>
+Variables sharing their type can use the shortened definition.
 
 ```go
 var c, python, java bool
@@ -172,11 +143,73 @@ u := uint(f)
 ```
 
 Constants are declared the same way as variables, but use the `const` keyword instead of `var`.<br/>
-Constants can be character, string, boolean, or numeric values and **cannot** be declared using the `:=` statement. 
+Constants can be character, string, boolean, or numeric values and **cannot** be declared using the `:=` statement.
+
+## Working with files
+
+Check a file or directory exists:
+
+```go
+import (
+    "fmt"
+    "os"
+)
+if _, err := os.Stat("/path/to/whatever"); os.IsNotExist(err) {
+	_ = fmt.Errorf("/path/to/whatever does not exist")
+}
+```
+
+## Working with Git repositories
+
+```go
+import (
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/go-git/go-git/v5"
+)
+
+// Clone repositories.
+repo, err := git.PlainClone(
+    "/path/to/repo",
+    false,
+    &git.CloneOptions{
+        URL:      "https://github.com/user/repo",
+        Progress: os.Stdout,
+    })
+if err != nil {
+    _ = fmt.Errorf("failed cloning the repository: %w", err)
+}
+
+// Open existing repositories.
+repo, err := git.PlainOpen("/path/to/repo")
+if err != nil {
+    _ = fmt.Errorf("failed opening the repository: %w", err)
+}
+
+// Get the current branch name.
+currentBranch, err := repo.Head()
+if err != nil {
+    _ = fmt.Errorf("failed getting the current branch of the repository: %w", err)
+}
+log.Printf("current branch of the repository: %s", currentBranch.Name().Short())
+```
+
+## Non-default module repositories
+
+See [Module proxies].<br/>
+This includes using *private* repositories.
+
+## Further readings
+
+- [Module proxies]
 
 ## Sources
 
-- [Website]
+All the references in the [further readings] section, plus the following:
+
+- [Getting started]
 - [Tour]
 - [Go by example]
 - [Check if file or directory exists in Golang]
@@ -187,8 +220,12 @@ Constants can be character, string, boolean, or numeric values and **cannot** be
   -->
 
 <!-- Upstream -->
+[getting started]: https://go.dev/doc/tutorial/getting-started
+[module proxies]: https://go.dev/ref/mod#module-proxy
 [tour]: https://go.dev/tour/welcome/1
-[website]: https://go.dev/doc/tutorial/getting-started
+
+<!-- In-article sections -->
+[further readings]: #further-readings
 
 <!-- Others -->
 [check if file or directory exists in golang]: https://gist.github.com/mattes/d13e273314c3b3ade33f

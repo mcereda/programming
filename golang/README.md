@@ -204,6 +204,7 @@ This includes using *private* repositories.
 ## Further readings
 
 - [Module proxies]
+- [Why GOPROXY matters and which to pick]
 
 ## Sources
 
@@ -214,6 +215,10 @@ All the references in the [further readings] section, plus the following:
 - [Go by example]
 - [Check if file or directory exists in Golang]
 - [How do you get the current branch name?]
+- [Building minimal Docker containers for Go applications]
+- [Create the smallest and secured Golang Docker image based on Scratch]
+- [Deserializing JSON in Go a tutorial]
+- [How to print struct variables in console]
 
 <!--
   References
@@ -228,6 +233,11 @@ All the references in the [further readings] section, plus the following:
 [further readings]: #further-readings
 
 <!-- Others -->
+[building minimal docker containers for go applications]: https://www.cloudbees.com/blog/building-minimal-docker-containers-for-go-applications/
 [check if file or directory exists in golang]: https://gist.github.com/mattes/d13e273314c3b3ade33f
+[create the smallest and secured golang docker image based on scratch]: https://medium.com/@chemidy/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324
+[deserializing json in go a tutorial]: https://medium.com/@fsufitch/deserializing-json-in-go-a-tutorial-d042412958ea
 [go by example]: https://gobyexample.com
 [how do you get the current branch name?]: https://github.com/src-d/go-git/issues/1129
+[how to print struct variables in console]: https://stackoverflow.com/questions/24512112/how-to-print-struct-variables-in-console#24512194
+[why goproxy matters and which to pick]: https://jfrog.com/blog/why-goproxy-matters-and-which-to-pick/

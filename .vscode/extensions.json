@@ -1,15 +1,15 @@
 {
-    "recommendations": [
-        "nhoizey.gremlins",
-        "oderwat.indent-rainbow",
-        "streetsidesoftware.code-spell-checker",
-        "redhat.vscode-yaml",
+  "recommendations": [
+    "nhoizey.gremlins",
+    "oderwat.indent-rainbow",
+    "streetsidesoftware.code-spell-checker",
+    "redhat.vscode-yaml",
 
-        "yzhang.markdown-all-in-one",
+    "yzhang.markdown-all-in-one",
 
-        "golang.go",
-        "casualjim.gotemplate",
+    "golang.go",
+    "casualjim.gotemplate",
 
-        "ms-python.python"
-    ]
+    "ms-python.python"
+  ]
 }

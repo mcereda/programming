@@ -3,8 +3,9 @@
     "nhoizey.gremlins",
     "oderwat.indent-rainbow",
     "streetsidesoftware.code-spell-checker",
-    "redhat.vscode-yaml",
 
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
     "yzhang.markdown-all-in-one",
 
     "golang.go",

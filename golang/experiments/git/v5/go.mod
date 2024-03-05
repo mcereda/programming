@@ -1,4 +1,4 @@
-module experiments/git/v1
+module experiments/git/v5
 
 go 1.21.1
 

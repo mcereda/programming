@@ -1,19 +1,23 @@
 # Golang
 
+1. [TL;DR](#tldr)
 1. [How the language works](#how-the-language-works)
 1. [Working with files](#working-with-files)
 1. [Working with Git repositories](#working-with-git-repositories)
 1. [Non-default module repositories](#non-default-module-repositories)
 1. [Further readings](#further-readings)
-1. [Sources](#sources)
+   1. [Sources](#sources)
 
-## TL;DR <!-- omit from toc -->
+## TL;DR
 
 ```sh
 # Init and run modules.
 go mod init example/hello
-echo package main > 'hello.go'
-go run .
+&& cat <<EOF > 'hello.go'
+package main
+func main() {}
+EOF \
+&& go run .
 
 
 # Use repository proxies.
@@ -23,16 +27,19 @@ GOPROXY='https://goproxy.io,https://proxy.golang.org,direct'
 GOPRIVATE='https://gorepo.example.com/path'
 
 # Use private proxies.
-GOPROXY='https://goproxy.example.com/path,https://proxy.golang.org,direct' \
+GOPROXY='https://goproxy.example.com/path,https://proxy.golang.org,direct'
 GOPRIVATE='https://goproxy.example.com/path'
 ```
 
 ## How the language works
 
-Go programs are made of _packages_ and start running from the _main_ package.
+Go programs are made of _packages_ and start running from the _main_ package.<br/>
+Somewhere in there, a file must contain the _main()_ function.
 
 ```go
 package main
+
+func main() {}
 ```
 
 External packages need to be _imported_ before use.
@@ -206,9 +213,7 @@ This includes using *private* repositories.
 - [Module proxies]
 - [Why GOPROXY matters and which to pick]
 
-## Sources
-
-All the references in the [further readings] section, plus the following:
+### Sources
 
 - [Getting started]
 - [Tour]
@@ -221,16 +226,14 @@ All the references in the [further readings] section, plus the following:
 - [How to print struct variables in console]
 
 <!--
-  References
+  Reference
+  ═╬═Time══
   -->
 
 <!-- Upstream -->
 [getting started]: https://go.dev/doc/tutorial/getting-started
 [module proxies]: https://go.dev/ref/mod#module-proxy
 [tour]: https://go.dev/tour/welcome/1
-
-<!-- In-article sections -->
-[further readings]: #further-readings
 
 <!-- Others -->
 [building minimal docker containers for go applications]: https://www.cloudbees.com/blog/building-minimal-docker-containers-for-go-applications/

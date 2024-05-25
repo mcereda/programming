@@ -1,5 +1,22 @@
 {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": false,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+
+    "markdown.validate.enabled": true,
+    "[markdown]": {
+        "editor.rulers": [
+            120
+        ],
+        "editor.wordWrap": "off"
+    },
+    "markdown.extension.toc.levels": "2..6",
+    "markdown.extension.toc.orderedList": true,
+
+    "cSpell.language": "en,en-GB",
     "cSpell.words": [
-        "behaviour"
-    ]
+        "Errorf",
+        "GOPRIVATE",
+        "GOPROXY"
+    ],
 }

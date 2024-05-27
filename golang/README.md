@@ -212,6 +212,7 @@ This includes using *private* repositories.
 
 - [Module proxies]
 - [Why GOPROXY matters and which to pick]
+- [Go go-to guide]
 
 ### Sources
 
@@ -241,6 +242,7 @@ This includes using *private* repositories.
 [create the smallest and secured golang docker image based on scratch]: https://medium.com/@chemidy/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324
 [deserializing json in go a tutorial]: https://medium.com/@fsufitch/deserializing-json-in-go-a-tutorial-d042412958ea
 [go by example]: https://gobyexample.com
+[go go-to guide]: https://yourbasic.org/golang/
 [how do you get the current branch name?]: https://github.com/src-d/go-git/issues/1129
 [how to print struct variables in console]: https://stackoverflow.com/questions/24512112/how-to-print-struct-variables-in-console#24512194
 [why goproxy matters and which to pick]: https://jfrog.com/blog/why-goproxy-matters-and-which-to-pick/

@@ -225,6 +225,10 @@ This includes using *private* repositories.
 - [Create the smallest and secured Golang Docker image based on Scratch]
 - [Deserializing JSON in Go a tutorial]
 - [How to print struct variables in console]
+- [Compress and b64-encode strings]
+- [5 small tips I recently learned in Go]
+- [Fundamentals of I/O in Go]
+- [Golang channels simplified]
 
 <!--
   Reference
@@ -237,12 +241,16 @@ This includes using *private* repositories.
 [tour]: https://go.dev/tour/welcome/1
 
 <!-- Others -->
+[5 small tips i recently learned in go]: https://medium.com/@andreiboar/5-small-tips-i-recently-learned-in-go-cf52d50cf129
 [building minimal docker containers for go applications]: https://www.cloudbees.com/blog/building-minimal-docker-containers-for-go-applications/
 [check if file or directory exists in golang]: https://gist.github.com/mattes/d13e273314c3b3ade33f
+[compress and b64-encode strings]: https://go.dev/play/p/WLgtELyoHi
 [create the smallest and secured golang docker image based on scratch]: https://medium.com/@chemidy/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324
 [deserializing json in go a tutorial]: https://medium.com/@fsufitch/deserializing-json-in-go-a-tutorial-d042412958ea
+[fundamentals of i/o in go]: https://medium.com/@andreiboar/fundamentals-of-i-o-in-go-c893d3714deb
 [go by example]: https://gobyexample.com
 [go go-to guide]: https://yourbasic.org/golang/
+[golang channels simplified]: https://medium.com/@raotalha302.rt/golang-channels-simplified-060547830871
 [how do you get the current branch name?]: https://github.com/src-d/go-git/issues/1129
 [how to print struct variables in console]: https://stackoverflow.com/questions/24512112/how-to-print-struct-variables-in-console#24512194
 [why goproxy matters and which to pick]: https://jfrog.com/blog/why-goproxy-matters-and-which-to-pick/

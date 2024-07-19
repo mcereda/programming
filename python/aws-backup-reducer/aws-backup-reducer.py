@@ -167,15 +167,13 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--log-level', type=str, default='WARN', help='Log level name; defaults to "WARN"')
     args = parser.parse_args()
 
-    # delete_old_objects(
-    #     bucket = args.bucket,
-    #     prefix = args.prefix,
-    #     days_to_retain_all_objects = args.retain_days,
-    #     interactive = args.interactive,
-    #     dry_run = args.dry_run,
-    #     delete_batch_size = args.delete_batch_size,
-    #     delete_quietly = args.delete_quietly,
-    #     log_level = args.log_level,
-    # )
-
-    print(vars(args))
+    delete_old_objects(
+        bucket = args.bucket,
+        prefix = args.prefix,
+        days_to_retain_all_objects = args.retain_days,
+        interactive = args.interactive,
+        dry_run = args.dry_run,
+        delete_batch_size = args.delete_batch_size,
+        delete_quietly = args.delete_quietly,
+        log_level = args.log_level,
+    )

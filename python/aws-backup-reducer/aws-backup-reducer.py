@@ -140,7 +140,10 @@ if __name__ == '__main__':
         '-p', '--prefix', type=str, default='',
         help='Prefix for the data in the bucket; defaults to "", suggested if using prefixes',
     )
-    parser.add_argument('-d', '--retain-days', type=int, default=30, help='Number of days to retain; defaults to 30')
+    parser.add_argument(
+        '-d', '--retain-days', type=int, default=30,
+        help='Number of days to retain objects for; defaults to 30',
+    )
     interactivity = parser.add_mutually_exclusive_group()
     interactivity.add_argument(
         '-i', '--interactive', action='store_true', default=True,

@@ -37,6 +37,9 @@ def delete_old_objects(
 
     logger.debug(vars())
 
+    if prefix == '':
+        logger.warning('No prefix given, this will operate on the entire bucket')
+
     actionable_limit_date = datetime.now(UTC) - timedelta(days=days_to_retain_all_objects)
     logger.info(f'acting on objects last modified before {actionable_limit_date.strftime(format='%F at %T')}')
 
@@ -63,16 +66,22 @@ def delete_old_objects(
     logger.info(f'objects sorted by last modified date (older to newer)')
     logger.debug(f'sorted objects: {objects}')
 
-    # lock the list of objects down
+    # lock the original list of objects down
     # I do know my chickens
     objects = tuple(objects)
+
+    # filter out directories
+    actionable_objects = [obj for obj in objects if not obj['Key'].endswith('/')]
+    logger.info(f'found {len(actionable_objects)} actionable objects')
+    logger.debug(f'actionable objects: {actionable_objects}')
 
     # filter out objects last modified in the last x days to keep
     # filtering from the iterator using iterator.search and a jmespath query would have been the easiest option
     # … but yeah, jmespath queries, thanks but nah thanks
-    actionable_objects = [obj for obj in objects if obj['LastModified'] < actionable_limit_date]
-    logger.info(f'found {len(actionable_objects)} actionable objects')
-    logger.debug(f'actionable objects {actionable_objects}')
+    actionable_objects = [obj for obj in actionable_objects if obj['LastModified'] < actionable_limit_date]
+    logger.info(f'filtered out objects modified in the last {days_to_retain_all_objects} days')
+    logger.info(f'actionable objects reduced to {len(actionable_objects)}')
+    logger.debug(f'actionable objects: {actionable_objects}')
 
     # filter out 1 object per year to keep
     # objects are ordered from the oldest to the most recent => grouping by year, the latest in each group set will be
@@ -82,7 +91,8 @@ def delete_old_objects(
         actionable_objects.remove(objects_by_year[-1])
         logger.info(f'filtered out object to keep for year {k}')
         logger.debug(f'filtered out object: {objects_by_year[-1]}')
-    logger.debug(f'actionable objects reduced to {actionable_objects}')
+    logger.info(f'actionable objects reduced to {len(actionable_objects)}')
+    logger.debug(f'actionable objects: {actionable_objects}')
 
     # filter out 1 object per week to keep
     # the requirement being 1y, no need to do this per year *and*, per week
@@ -92,7 +102,8 @@ def delete_old_objects(
         actionable_objects.remove(objects_by_week[-1])
         logger.info(f'filtered out object to keep for week {k}')
         logger.debug(f'filtered out object: {objects_by_week[-1]}')
-    logger.debug(f'actionable objects reduced to {actionable_objects}')
+    logger.info(f'actionable objects reduced to {len(actionable_objects)}')
+    logger.debug(f'actionable objects: {actionable_objects}')
 
     # lock the list of actionable objects down
     # I do know my chickens

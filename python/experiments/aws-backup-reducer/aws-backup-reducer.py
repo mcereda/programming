@@ -104,8 +104,8 @@ def delete_old_objects(
             print(f'About to {"faking" if dry_run else "really"} delete {len(batch)} objects.')
             proceed = input('Proceed?\n> ')
             if proceed.lower() not in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']:
+                print(f'Batch skipped')
                 continue
-            print(f'Batch skipped')
         if dry_run:
             logger.info(f'faked deleting {len(batch)} objects')
             logger.debug(f'supposedly deleted objects: {batch}')

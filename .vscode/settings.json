@@ -8,10 +8,14 @@
         "editor.rulers": [
             120
         ],
-        "editor.wordWrap": "off"
+        "editor.wordWrap": "off",
     },
     "markdown.extension.toc.levels": "2..6",
     "markdown.extension.toc.orderedList": true,
+
+    "autoDocstring.docstringFormat": "pep257",
+    "autoDocstring.includeExtendedSummary": true,
+    "autoDocstring.startOnNewLine": true,
 
     "cSpell.language": "en,en-GB",
     "cSpell.words": [

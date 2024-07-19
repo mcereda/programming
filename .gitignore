@@ -4,5 +4,5 @@
 !.vscode/extensions.json
 !.vscode/settings.json
 
-/python/.venv/
+/python/**/.venv/
 /python/experiments/files/output.toml

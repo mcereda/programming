@@ -141,26 +141,38 @@ if __name__ == '__main__':
         help='Prefix for the data in the bucket; defaults to "", suggested if using prefixes',
     )
     parser.add_argument('-d', '--retain-days', type=int, default=30, help='Number of days to retain; defaults to 30')
-    parser.add_argument(
-        '-i', '--interactive', action='store_true', default=False,
+    interactivity = parser.add_mutually_exclusive_group()
+    interactivity.add_argument(
+        '-i', '--interactive', action='store_true', default=True,
         help='Be interactive; defaults to false',
     )
-    parser.add_argument('--dry-run', action='store_false', default=True, help='Dry run; defaults to true')
+    interactivity.add_argument(
+        '-I', '--no-interactive', dest='interactive', action='store_false',
+        help='Do *not* be interactive',
+    )
+    run_type = parser.add_mutually_exclusive_group()
+    run_type.add_argument('--dry-run', action='store_true', default=True, help='Dry run; defaults to true')
+    run_type.add_argument('--no-dry-run', dest='dry_run', action='store_false', default=True, help='Do *not* dry run')
     parser.add_argument(
         '-s', '--delete-batch-size', type=int, default=1000,
         help='Number of objects to request or delete at any time; min 1, max 1000, defaults to 1000',
     )
-    parser.add_argument('-q', '--quiet', action='store_true', default=False, help='Delete quietly; defaults to false')
-    parser.add_argument('-l', '--log-level', type=str, default='WARN', help='Log level name. Default is "WARN"')
+    parser.add_argument(
+        '-q', '--delete-quietly', action='store_true', default=False,
+        help='Delete quietly; defaults to false',
+    )
+    parser.add_argument('-l', '--log-level', type=str, default='WARN', help='Log level name; defaults to "WARN"')
     args = parser.parse_args()
 
-    delete_old_objects(
-        bucket = args.bucket,
-        prefix = args.prefix,
-        days_to_retain_all_objects = args.retain_days,
-        interactive = args.interactive,
-        dry_run = args.dry_run,
-        delete_batch_size = args.delete_batch_size,
-        delete_quietly = args.quiet,
-        log_level = args.log_level,
-    )
+    # delete_old_objects(
+    #     bucket = args.bucket,
+    #     prefix = args.prefix,
+    #     days_to_retain_all_objects = args.retain_days,
+    #     interactive = args.interactive,
+    #     dry_run = args.dry_run,
+    #     delete_batch_size = args.delete_batch_size,
+    #     delete_quietly = args.delete_quietly,
+    #     log_level = args.log_level,
+    # )
+
+    print(vars(args))

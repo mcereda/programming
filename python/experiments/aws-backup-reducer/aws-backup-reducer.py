@@ -6,7 +6,7 @@ import logging
 from datetime import datetime, timedelta, UTC
 from itertools import batched, groupby
 
-def delete_old_backups(
+def delete_old_objects(
     bucket: str,
     prefix: str = '',
     days_to_retain_all_objects: int = 30,
@@ -17,7 +17,7 @@ def delete_old_backups(
 ):
 
     """
-    Delete old backups
+    Delete old objects from an AWS S3 bucket
 
     Retain days_to_retain_all_objects days worth of objects, then 1 per week for 1 year, then 1 per year
 
@@ -123,4 +123,25 @@ def delete_old_backups(
             logger.debug(f'deleted objects: {response['Deleted']}')
 
 if __name__ == '__main__':
-    delete_old_backups(bucket='backups', batch_size=5, dry_run=True)
+    parser = argparse.ArgumentParser(description='Delete old data from an AWS S3 bucket')
+    parser.add_argument('bucket', type=str, help='Bucket containing the data')
+    parser.add_argument('-p', '--prefix', type=str, default='', help='Prefix for the data')
+    parser.add_argument('-d', '--retain-days', type=int, default=30, help='Number of days to retain')
+    parser.add_argument('-i', '--interactive', action='store_false', default=True, help='Be interactive')
+    parser.add_argument('-q', '--quiet', action='store_true', default=False, help='Delete quietly')
+    parser.add_argument('--dry-run', action='store_false', default=True, help='Dry run')
+    parser.add_argument(
+        '-s', '--batch-size', type=int, default=1000,
+        help='Number of objects to request or delete at any time'
+    )
+    args = parser.parse_args()
+
+    delete_old_objects(
+        bucket = args.bucket,
+        prefix = args.prefix,
+        days_to_retain_all_objects = args.retain_days,
+        interactive = args.interactive,
+        batch_size = args.batch_size,
+        dry_run = args.dry_run,
+        delete_quietly = args.quiet,
+    )

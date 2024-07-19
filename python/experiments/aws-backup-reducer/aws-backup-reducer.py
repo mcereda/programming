@@ -12,8 +12,8 @@ def delete_old_objects(
     prefix: str = '',
     days_to_retain_all_objects: int = 30,
     interactive: bool = True,
-    batch_size: int = 1000,
     dry_run: bool = True,
+    delete_batch_size: int = 1000,
     delete_quietly: bool = False,
 ):
 
@@ -23,10 +23,11 @@ def delete_old_objects(
     Retain days_to_retain_all_objects days worth of objects, then 1 per week for 1 year, then 1 per year
 
     FIXME: check the bucket is not a _directory bucket_
+    FIXME: set logging from CLI argument
     """
 
     assert bucket != '', 'bucket cannot be an empty string'
-    assert batch_size >=1 and batch_size <= 1000, 'batch_size must be between 1 and 1000'
+    assert delete_batch_size >=1 and delete_batch_size <= 1000, 'delete_batch_size must be between 1 and 1000'
 
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
@@ -52,9 +53,6 @@ def delete_old_objects(
     iterator = paginator.paginate(
         Bucket = bucket,
         Prefix = prefix,
-        PaginationConfig = {
-            'MaxItems': batch_size,
-        },
     )
     objects = []
     for obj in iterator:
@@ -112,7 +110,7 @@ def delete_old_objects(
 
     # use one bulk request, it makes no sense to call it once per object
     # bulk requests can sustain up to 1000 objects at a time => send requests with batches
-    for batch in batched(actionable_objects, batch_size):
+    for batch in batched(actionable_objects, delete_batch_size):
         if interactive:
             print(f'About to {"faking" if dry_run else "really"} delete {len(batch)} objects.')
             proceed = input('Proceed?\n> ')
@@ -137,16 +135,22 @@ def delete_old_objects(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Delete old data from an AWS S3 bucket')
-    parser.add_argument('bucket', type=str, help='Bucket containing the data')
-    parser.add_argument('-p', '--prefix', type=str, default='', help='Prefix for the data')
-    parser.add_argument('-d', '--retain-days', type=int, default=30, help='Number of days to retain')
-    parser.add_argument('-i', '--interactive', action='store_false', default=True, help='Be interactive')
-    parser.add_argument('-q', '--quiet', action='store_true', default=False, help='Delete quietly')
-    parser.add_argument('--dry-run', action='store_false', default=True, help='Dry run')
+    parser.add_argument('bucket', type=str, help='Bucket containing the data; required')
+    parser.add_argument(
+        '-p', '--prefix', type=str, default='',
+        help='Prefix for the data in the bucket; defaults to "", suggested if using prefixes',
+    )
+    parser.add_argument('-d', '--retain-days', type=int, default=30, help='Number of days to retain; defaults to 30')
+    parser.add_argument(
+        '-i', '--interactive', action='store_true', default=False,
+        help='Be interactive; defaults to false',
+    )
+    parser.add_argument('--dry-run', action='store_false', default=True, help='Dry run; defaults to true')
     parser.add_argument(
         '-s', '--batch-size', type=int, default=1000,
-        help='Number of objects to request or delete at any time'
+        help='Number of objects to request or delete at any time; min 1, max 1000, defaults to 1000',
     )
+    parser.add_argument('-q', '--quiet', action='store_true', default=False, help='Delete quietly; defaults to false')
     args = parser.parse_args()
 
     delete_old_objects(
@@ -154,7 +158,7 @@ if __name__ == '__main__':
         prefix = args.prefix,
         days_to_retain_all_objects = args.retain_days,
         interactive = args.interactive,
-        batch_size = args.batch_size,
         dry_run = args.dry_run,
+        delete_batch_size = args.delete_batch_size,
         delete_quietly = args.quiet,
     )

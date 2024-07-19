@@ -15,6 +15,7 @@ def delete_old_objects(
     dry_run: bool = True,
     delete_batch_size: int = 1000,
     delete_quietly: bool = False,
+    log_level: str = 'WARN',
 ):
 
     """
@@ -23,14 +24,13 @@ def delete_old_objects(
     Retain days_to_retain_all_objects days worth of objects, then 1 per week for 1 year, then 1 per year
 
     FIXME: check the bucket is not a _directory bucket_
-    FIXME: set logging from CLI argument
     """
 
     assert bucket != '', 'bucket cannot be an empty string'
     assert delete_batch_size >=1 and delete_batch_size <= 1000, 'delete_batch_size must be between 1 and 1000'
 
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.getLevelName(log_level.upper()))
     handler = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(message)s')
     handler.setFormatter(formatter)
@@ -147,10 +147,11 @@ if __name__ == '__main__':
     )
     parser.add_argument('--dry-run', action='store_false', default=True, help='Dry run; defaults to true')
     parser.add_argument(
-        '-s', '--batch-size', type=int, default=1000,
+        '-s', '--delete-batch-size', type=int, default=1000,
         help='Number of objects to request or delete at any time; min 1, max 1000, defaults to 1000',
     )
     parser.add_argument('-q', '--quiet', action='store_true', default=False, help='Delete quietly; defaults to false')
+    parser.add_argument('-l', '--log-level', type=str, default='WARN', help='Log level name. Default is "WARN"')
     args = parser.parse_args()
 
     delete_old_objects(
@@ -161,4 +162,5 @@ if __name__ == '__main__':
         dry_run = args.dry_run,
         delete_batch_size = args.delete_batch_size,
         delete_quietly = args.quiet,
+        log_level = args.log_level,
     )

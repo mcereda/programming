@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.12
 
+import argparse
 import boto3
 import logging
 
@@ -96,6 +97,7 @@ def delete_old_objects(
     # lock the list of actionable objects down
     # I do know my chickens
     actionable_objects = tuple(actionable_objects)
+    logger.debug(f'retained objects: {[obj for obj in objects if obj not in actionable_objects]}')
 
     # use one bulk request, it makes no sense to call it once per object
     # bulk requests can sustain up to 1000 objects at a time => send requests with batches

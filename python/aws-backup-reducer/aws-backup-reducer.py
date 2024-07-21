@@ -41,8 +41,8 @@ def delete_old_objects(
     if prefix == '':
         logger.warning('No prefix given, this will operate on the entire bucket')
 
-    actionable_limit_date = datetime.now(UTC) - timedelta(days=days_to_retain_all_objects)
-    logger.info(f'acting on objects last modified before {actionable_limit_date.strftime(format='%F at %T')}')
+    actionable_date_limit = datetime.now(UTC) - timedelta(days=days_to_retain_all_objects)
+    logger.info(f'acting on objects last modified before {actionable_date_limit.strftime(format='%F at %T')}')
 
     # get all objects
     # the client uses pagination, requiring to use the paginator
@@ -60,7 +60,9 @@ def delete_old_objects(
     logger.info(f'found {len(objects)} objects')
     logger.debug(f'objects: {objects}')
     # sorting by date will make things easier later
-    objects.sort(key=lambda obj:obj['LastModified'])
+    # ascending or descending does not really matter
+    # sort ascending just to use list[0] instead of list[-1] to grab the newest object
+    objects.sort(key=lambda obj:obj['LastModified'], reverse=True)
     logger.info(f'objects sorted by last modified date (older to newer)')
     logger.debug(f'sorted objects: {objects}')
 
@@ -76,7 +78,7 @@ def delete_old_objects(
     # filter out objects last modified in the last x days to keep
     # filtering from the iterator using iterator.search and a jmespath query would have been the easiest option
     # … but yeah, jmespath queries, thanks but nah thanks
-    actionable_objects = [obj for obj in actionable_objects if obj['LastModified'] < actionable_limit_date]
+    actionable_objects = [obj for obj in actionable_objects if obj['LastModified'] < actionable_date_limit]
     logger.info(f'filtered out objects modified in the last {days_to_retain_all_objects} days')
     logger.info(f'actionable objects reduced to {len(actionable_objects)}')
     logger.debug(f'actionable objects: {actionable_objects}')
@@ -86,9 +88,9 @@ def delete_old_objects(
     # the one to keep
     for k, v in groupby(actionable_objects, key = lambda obj: obj['LastModified'].isocalendar().year):
         objects_by_year = list(v)
-        actionable_objects.remove(objects_by_year[-1])
+        actionable_objects.remove(objects_by_year[0])
         logger.info(f'filtered out object to keep for year {k}')
-        logger.debug(f'filtered out object: {objects_by_year[-1]}')
+        logger.debug(f'filtered out object: {objects_by_year[0]}')
     logger.info(f'actionable objects reduced to {len(actionable_objects)}')
     logger.debug(f'actionable objects: {actionable_objects}')
 
@@ -97,9 +99,9 @@ def delete_old_objects(
     # grouping by week, the latest in each group set will be the one to keep
     for k, v in groupby(actionable_objects, key = lambda obj: obj['LastModified'].isocalendar().week):
         objects_by_week = list(v)
-        actionable_objects.remove(objects_by_week[-1])
+        actionable_objects.remove(objects_by_week[0)
         logger.info(f'filtered out object to keep for week {k}')
-        logger.debug(f'filtered out object: {objects_by_week[-1]}')
+        logger.debug(f'filtered out object: {objects_by_week[0]}')
     logger.info(f'actionable objects reduced to {len(actionable_objects)}')
     logger.debug(f'actionable objects: {actionable_objects}')
 

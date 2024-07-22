@@ -67,7 +67,7 @@ def delete_old_objects(
     logger.debug(f'sorted objects: {objects}')
 
     # lock the original list of objects down
-    # I do know my chickens
+    # I do know who I'm dealing with
     objects = tuple(objects)
 
     # filter out directories
@@ -99,29 +99,34 @@ def delete_old_objects(
     # grouping by week, the latest in each group set will be the one to keep
     for k, v in groupby(actionable_objects, key = lambda obj: obj['LastModified'].isocalendar().week):
         objects_by_week = list(v)
-        actionable_objects.remove(objects_by_week[0)
+        actionable_objects.remove(objects_by_week[0])
         logger.info(f'filtered out object to keep for week {k}')
         logger.debug(f'filtered out object: {objects_by_week[0]}')
     logger.info(f'actionable objects reduced to {len(actionable_objects)}')
     logger.debug(f'actionable objects: {actionable_objects}')
 
     # lock the list of actionable objects down
-    # I do know my chickens
+    # I do know who I'm dealing with
     actionable_objects = tuple(actionable_objects)
-    logger.debug(f'retained objects: {[obj for obj in objects if obj not in actionable_objects]}')
+
+    retained_objects = tuple(obj for obj in objects if obj not in actionable_objects)
+    logger.info(f'retained {len(retained_objects)} objects')
+    logger.debug(f'retained objects: {retained_objects}')
 
     # use one bulk request, it makes no sense to call it once per object
     # bulk requests can sustain up to 1000 objects at a time => send requests with batches
+    deleted_objects = []
     for batch in batched(actionable_objects, delete_batch_size):
         if interactive:
-            print(f'About to {"faking" if dry_run else "really"} delete {len(batch)} objects.')
+            print(f'About to {"fake deleting" if dry_run else "*really* delete"} {len(batch)} objects.')
             proceed = input('Proceed?\n> ')
             if proceed.lower() not in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']:
                 print(f'Batch skipped')
                 continue
         if dry_run:
-            logger.info(f'faked deleting {len(batch)} objects')
-            logger.debug(f'supposedly deleted objects: {batch}')
+            logger.info(f'faked deleting {len(batch)} objects in this batch')
+            logger.debug(f'supposedly deleted objects in batch: {batch}')
+            deleted_objects.extend(batch)
         else:
             response = client.delete_objects(
                 Bucket = bucket,
@@ -132,8 +137,14 @@ def delete_old_objects(
             )
             logger.debug(f'response: {response}')
             logger.info(f'deletion returned code {response['ResponseMetadata']['HTTPStatusCode']}')
-            logger.warning(f'deleted {len(response['Deleted'])} objects')
-            logger.debug(f'deleted objects: {response['Deleted']}')
+            logger.info(f'deleted {len(response['Deleted'])} objects in this batch')
+            logger.debug(f'deleted objects in batch: {response['Deleted']}')
+            deleted_objects.extend(response['Deleted'])
+
+    for obj in retained_objects:
+        print(f'retained object {obj['Key']}')
+    for obj in deleted_objects:
+        print(f'deleted objects: {obj['Key']}')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Delete old data from an AWS S3 bucket')

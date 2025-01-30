@@ -20,7 +20,16 @@ deactivate
 ```
 
 ```py
-source_list = ['apple', 'banana', 'cherry']
+custom_list = ['apple', 'banana', 'cherry']
+custom_dict = {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 1964
+}
+
+# Get lengths
+print(len(custom_list))
+print(len(custom_dict))
 
 # Unset variables
 # By deleting their value and letting the garbage collector take care of it
@@ -30,11 +39,15 @@ del kwargs
 
 # Convert lists to sets
 # By using the set() function
-target_set = set(source_list)
-print(f'type: {type(target_set)}, content: {target_set}')
+custom_list = set(custom_list)
+print(f'type: {type(custom_list)}, content: {custom_list}')
 # By unpacking the list's items to form the set
-target_set = {*source_list}
-print(f'type: {type(target_set)}, content: {target_set}')
+custom_list = {*custom_list}
+print(f'type: {type(custom_list)}, content: {custom_list}')
+
+# Convert dictionaries to tuples
+# By using the tuple() function
+custom_dict = tuple(custom_dict)
 
 # Get values from environment variables
 import os
@@ -88,8 +101,8 @@ Generally:
 
 ### Sources
 
-- [`venv` — creation of virtual environments][venv — creation of virtual environments]
-- [Install packages in a virtual environment using `pip` and `venv`][install packages in a virtual environment using pip and venv]
+- [venv — creation of virtual environments]
+- [Install packages in a virtual environment using pip and venv]
 - [Python module import: single-line vs multi-line]
 - [Python tutorial]
 - [Convert List to Set]

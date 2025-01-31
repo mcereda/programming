@@ -1,6 +1,7 @@
 # Python
 
 1. [TL;DR](#tldr)
+1. [Modules of interest](#modules-of-interest)
 1. [Further readings](#further-readings)
    1. [Sources](#sources)
 
@@ -97,7 +98,18 @@ Generally:
 
   </details>
 
+## Modules of interest
+
+| Module     | Use for                                                                  |
+| ---------- | ------------------------------------------------------------------------ |
+| [boto3]    | Interact with AWS services                                               |
+| [ciso8601] | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
+| [logging]  | Kinda self-explanatory, isn't it?                                        |
+| [psycopg]  | Interact with PostgreSQL databases                                       |
+
 ## Further readings
+
+- [Using tabulation in Python logging format]
 
 ### Sources
 
@@ -113,10 +125,17 @@ Generally:
   ═╬═Time══
   -->
 
-<!-- Others -->
-[convert list to set]: https://pythonexamples.org/python-convert-list-to-set/
+<!-- Upstream -->
 [install packages in a virtual environment using pip and venv]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+[venv — creation of virtual environments]: https://docs.python.org/3/library/venv.html
+
+<!-- Others -->
+[boto3]: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+[ciso8601]: https://pypi.org/project/ciso8601/
+[convert list to set]: https://pythonexamples.org/python-convert-list-to-set/
+[logging]: https://docs.python.org/3/library/logging.html
+[psycopg]: https://www.psycopg.org/
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
 [python tutorial]: https://www.w3schools.com/python
-[venv — creation of virtual environments]: https://docs.python.org/3/library/venv.html
+[using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [when should i use a map instead of a for loop?]: https://stackoverflow.com/questions/1975250/when-should-i-use-a-map-instead-of-a-for-loop

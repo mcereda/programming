@@ -103,8 +103,13 @@ Initiates the connectivity to AWS services.
 
 Leveraged by service Clients and Resources.<br/>
 Boto3 creates a default session automatically when needed, using the default credential profile.<br/>
-The default credentials profile uses the `~/.aws/credentials` file if found, or tries assuming the role of the executing
-machine if not.
+The default credentials profile tries to get the credentials in this order:
+
+1. Environment variables.
+1. assume-role.
+1. assume-role-with-web-identity.
+1. SSO.
+1. The `~/.aws/credentials` file.
 
 ## Error handling
 

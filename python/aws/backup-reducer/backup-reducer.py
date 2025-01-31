@@ -32,7 +32,7 @@ def delete_old_objects(
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.getLevelName(log_level.upper()))
     handler = logging.StreamHandler()
-    formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(message)s')
+    formatter = logging.Formatter('%(asctime)s : %(levelname)-8s : %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 

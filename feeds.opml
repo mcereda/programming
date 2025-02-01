@@ -1,0 +1,40 @@
+<opml version="1.0" xmlns:fz="urn:forumzilla:">
+  <head>
+    <title>Feeds</title>
+    <dateCreated>Sat, 1 Feb 2025 15:15:15 GMT</dateCreated>
+  </head>
+  <body>
+    <outline title="Baeldung">
+      <outline
+        title="Baeldung"
+        text="Baeldung"
+        htmlUrl="https://www.baeldung.com"
+        xmlUrl="https://feeds.feedblitz.com/baeldung&amp;x=1"
+        type="rss"
+        version="RSS"
+        fz:quickMode="false"
+        fz:options="{&quot;version&quot;:2,&quot;updates&quot;:{&quot;enabled&quot;:true,&quot;updateMinutes&quot;:1440,&quot;updateUnits&quot;:&quot;d&quot;,&quot;lastUpdateTime&quot;:1738417648890,&quot;lastDownloadTime&quot;:null,&quot;updatePeriod&quot;:&quot;hourly&quot;,&quot;updateFrequency&quot;:&quot;1&quot;,&quot;updateBase&quot;:&quot;&quot;},&quot;category&quot;:{&quot;enabled&quot;:false,&quot;prefixEnabled&quot;:false,&quot;prefix&quot;:&quot;&quot;}}"
+      />
+      <outline
+        title="Baeldung - Scala"
+        text="Baeldung - Scala"
+        htmlUrl="https://www.baeldung.com/scala"
+        xmlUrl="https://feeds.feedblitz.com/baeldung/scala&amp;x=1"
+        type="rss"
+        version="RSS"
+        fz:quickMode="false"
+        fz:options="{&quot;version&quot;:2,&quot;updates&quot;:{&quot;enabled&quot;:true,&quot;updateMinutes&quot;:1440,&quot;updateUnits&quot;:&quot;d&quot;,&quot;lastUpdateTime&quot;:1738418014348,&quot;lastDownloadTime&quot;:null,&quot;updatePeriod&quot;:&quot;hourly&quot;,&quot;updateFrequency&quot;:&quot;1&quot;,&quot;updateBase&quot;:&quot;&quot;},&quot;category&quot;:{&quot;enabled&quot;:false,&quot;prefixEnabled&quot;:false,&quot;prefix&quot;:&quot;&quot;}}"
+      />
+      <outline
+        title="Baeldung - Kotlin"
+        text="Baeldung - Kotlin"
+        htmlUrl="https://www.baeldung.com/kotlin"
+        xmlUrl="https://feeds.feedblitz.com/baeldung/kotlin&amp;x=1"
+        type="rss"
+        version="RSS"
+        fz:quickMode="false"
+        fz:options="{&quot;version&quot;:2,&quot;updates&quot;:{&quot;enabled&quot;:true,&quot;updateMinutes&quot;:1440,&quot;updateUnits&quot;:&quot;d&quot;,&quot;lastUpdateTime&quot;:1738418043159,&quot;lastDownloadTime&quot;:null,&quot;updatePeriod&quot;:&quot;hourly&quot;,&quot;updateFrequency&quot;:&quot;1&quot;,&quot;updateBase&quot;:&quot;&quot;},&quot;category&quot;:{&quot;enabled&quot;:false,&quot;prefixEnabled&quot;:false,&quot;prefix&quot;:&quot;&quot;}}"
+      />
+    </outline>
+  </body>
+</opml>

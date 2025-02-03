@@ -5,6 +5,8 @@
 1. [Working with files](#working-with-files)
 1. [Working with Git repositories](#working-with-git-repositories)
 1. [Non-default module repositories](#non-default-module-repositories)
+1. [Troubleshooting](#troubleshooting)
+   1. [Applications have trouble performing as expected on Kubernetes](#applications-have-trouble-performing-as-expected-on-kubernetes)
 1. [Further readings](#further-readings)
    1. [Sources](#sources)
 
@@ -207,6 +209,19 @@ log.Printf("current branch of the repository: %s", currentBranch.Name().Short())
 
 See [Module proxies].<br/>
 This includes using *private* repositories.
+
+## Troubleshooting
+
+### Applications have trouble performing as expected on Kubernetes
+
+By default, Golang sets the `GOMAXPROCS` environment variable (the number of OS threads for Go code execution) **to the
+number of available CPUs on the node running the Pod**.<br/>
+This is **different** from the amount of resources the Pod is allocated when a CPU limit is set in the Pod's
+specification, and the Go scheduler might try to run more or less threads than the application has CPU time for.
+
+Properly set the `GOMAXPROCS` environment variable in the Pod's specification to match the limits imposed to the
+Pod.<br/>
+If the CPU limit is less than `1000m` (1 CPU core), set `GOMAXPROCS=1`.
 
 ## Further readings
 

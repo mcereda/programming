@@ -3,6 +3,7 @@
 1. [TL;DR](#tldr)
 1. [Best practices](#best-practices)
 1. [Further readings](#further-readings)
+   1. [Sources](#sources)
 
 ## TL;DR
 
@@ -38,6 +39,18 @@ TypeScript:
 `null` specifies something is currently unavailable.
 
 ```ts
+// single-line comment
+/* comment block */
+/* comment blocks
+ * can span
+ * multiple lines */
+/** JSDOC block */
+/**
+ * JSDOC blocks
+ * can span multiple lines
+ * and start with double '*'
+ */
+
 var foo = 123;
 const bar: string = '123';
 let list: boolean[] = [true, false, false];              // array declaration format 1
@@ -50,6 +63,7 @@ let point2D: Point2D = { x: 0, y: 10 };
 function iTakePoint2D(point: Point2D) { /* do something */ };
 
 // Ternary operator.
+// (condition) ? valueIfTrue : valueIfFalse
 key = dict.has(key) ? dict.get(key)! : 'default';
 
 // Explicitly convert values into true booleans (one of true|false).
@@ -57,6 +71,13 @@ const hasName = !!name;
 
 // Assert some value is non-null and non-undefined in contexts where the type checker is unable to conclude that fact.
 const keyName = keyPair_output.apply(kp => kp.keyName!);
+
+// Remove undefined values from arrays.
+const cleanArray = originalArray.filter(item => item !== undefined);
+
+// Provide fallback values in case the primary value is `null` or `undefined`.
+// value ?? fallback
+const prettyPrint = options.prettyPrint ?? true;
 ```
 
 ## Best practices
@@ -81,6 +102,14 @@ const keyName = keyPair_output.apply(kp => kp.keyName!);
 - [TypeScript Deep Dive]
 - [Contributors Coding Guidelines]
 - The [deep-equal] package
+- [How To Initialize An Empty Typed Object In TypeScript?]
+- [Top 12 Most Useful Typescript Utility Types]
+- [How to Break a String into Multiple Lines in TypeScript]
+- [How to Add an Item to an Array in TypeScript if Not Undefined]
+
+### Sources
+
+- [Nullish Coalescing: The ?? Operator in TypeScript]
 
 <!--
   Reference
@@ -93,6 +122,11 @@ const keyName = keyPair_output.apply(kp => kp.keyName!);
 [website]: https://www.typescriptlang.org/
 
 <!-- Others -->
-[deep-equal]: https://www.npmjs.com/package/deep-equal
-[typescript deep dive]: https://basarat.gitbook.io/typescript
 [contributors coding guidelines]: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
+[deep-equal]: https://www.npmjs.com/package/deep-equal
+[how to add an item to an array in typescript if not undefined]: https://www.webdevtutor.net/blog/typescript-add-item-to-array-if-not-undefined
+[how to break a string into multiple lines in typescript]: https://www.webdevtutor.net/blog/typescript-break-string-into-multiple-lines
+[how to initialize an empty typed object in typescript?]: https://timmousk.com/blog/typescript-empty-object/
+[nullish coalescing: the ?? operator in typescript]: https://mariusschulz.com/blog/nullish-coalescing-the-operator-in-typescript
+[top 12 most useful typescript utility types]: https://timmousk.com/blog/typescript-utility-types/
+[typescript deep dive]: https://basarat.gitbook.io/typescript

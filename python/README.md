@@ -79,6 +79,32 @@ def funct(log_level='WARN'):
     logger.debug(vars())
 ```
 
+Work with regular expressions:
+
+```py
+import re
+
+# Parse
+pattern = re.compile(r'^(?P<source>\d+|NOT_FOUND)-(?P<destination>\d+|NOT_FOUND)-(?P<timestampz>\d+(.\d+)?).ogg$')
+matches = pattern.match('000000000-000000000-0000000000.00000.ogg')
+source = matches.group('source')
+destination = matches.group('destination')
+timestamp = datetime.fromtimestamp(float(matches.group('timestampz')), timezone.utc)
+
+# Replace text
+source_intl = re.sub(r'^\+?(39)?(?P<phoneNum>(0|2)\d+)', r'+39\g<phoneNum>', source) if source is not None else source
+```
+
+Type hinting (since Python 3.5):
+
+```py
+dry_run: bool = True
+processed: int = 0
+source_name: str = 'test'
+def format_phone_number_old(phone: typing.Optional[str] = None): pass  # python 3.5 to 3.10
+def format_phone_number(phone: str|None): pass  # since python 3.10
+```
+
 Generally:
 
 - `map()` =~ plain `for` loop =~ operation in constructor performance-wise.
@@ -119,6 +145,7 @@ Generally:
 - [Python tutorial]
 - [Convert List to Set]
 - [When should I use a Map instead of a For Loop?]
+- [Python 3 type hinting for None?]
 
 <!--
   Reference
@@ -139,3 +166,4 @@ Generally:
 [python tutorial]: https://www.w3schools.com/python
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [when should i use a map instead of a for loop?]: https://stackoverflow.com/questions/1975250/when-should-i-use-a-map-instead-of-a-for-loop
+[python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none

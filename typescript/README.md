@@ -39,6 +39,8 @@ TypeScript:
 `undefined` specifies something hasn't been initialized.<br/>
 `null` specifies something is currently unavailable.
 
+Quickly test stuff in the [playground].
+
 ```ts
 // single-line comment
 /* comment block */
@@ -82,8 +84,26 @@ const cleanArray = originalArray.filter(item => item !== undefined);
 // value ?? fallback
 const prettyPrint = options.prettyPrint ?? true;
 
+const transformedString = "";
+// replace a substring
+transformedString = sourceString?.replace("substring", "replacement");
+// replace the first match of a regexp
+transformedString = sourceString?.replace(/regex/, "replacementFor1");
+// replace all matches of a regexp
+transformedString = sourceString?.replace(/regex/g, "replacementForAll");
 // Transform only the first character of a string to lowercase.
-const transformedString = sourceString?.replace(/^\w/g, match => match.toLowerCase())
+transformedString = sourceString?.replace(/-?\w/g, match => match.toLowerCase());
+
+/**
+ * Construct a copy of an array with duplicate items removed.
+ * Where duplicate items exist, only the first instance will be kept.
+ * Converts an array to a Set, removing duplicates faster than any native loop, then uses the spread syntax to convert
+ * that Set back into a new array.
+ * By making the function use a generic type, it can be used with any type of array.
+ */
+function removeDups<T>(array: T[]): T[] {
+    return [...new Set(array)];
+}
 ```
 
 ## Best practices
@@ -144,6 +164,7 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 ### Sources
 
 - [Nullish Coalescing: The ?? Operator in TypeScript]
+- [Remove duplicates from array in typescript]
 
 <!--
   Reference
@@ -155,6 +176,7 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 [documentation]: https://www.typescriptlang.org/docs/
 [local paths]: https://docs.npmjs.com/cli/v11/configuring-npm/package-json#local-paths
 [website]: https://www.typescriptlang.org/
+[playground]: https://www.typescriptlang.org/play/
 
 <!-- Others -->
 [contributors coding guidelines]: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
@@ -164,5 +186,6 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 [how to initialize an empty typed object in typescript?]: https://timmousk.com/blog/typescript-empty-object/
 [mastering typescript import from path]: https://www.webdevtutor.net/blog/typescript-import-from-path
 [nullish coalescing: the ?? operator in typescript]: https://mariusschulz.com/blog/nullish-coalescing-the-operator-in-typescript
+[remove duplicates from array in typescript]: https://stackoverflow.com/questions/63322597/remove-duplicates-from-array-in-typescript#76633098
 [top 12 most useful typescript utility types]: https://timmousk.com/blog/typescript-utility-types/
 [typescript deep dive]: https://basarat.gitbook.io/typescript

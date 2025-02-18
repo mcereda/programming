@@ -63,7 +63,6 @@ def function_using_sys():
     import sys
     print(sys._getframe().f_code.co_name)  # function_using_sys
 
-
 # Set logging per function
 def funct(log_level='WARN'):
     import logging
@@ -77,12 +76,20 @@ def funct(log_level='WARN'):
     logger.addHandler(handler)
 
     logger.debug(vars())
+
+# `except` clauses may name multiple exceptions as a parenthesized tuple
+try: pass
+except (IDontLikeYouException, YouAreBeingMeanException) as e: raise
 ```
 
 Work with regular expressions:
 
 ```py
 import re
+
+# Just check for matches
+# Returns a match object that can be used in conditionals (evaluates True if matched)
+re.match(r".* something .*", 'find if something matches')
 
 # Parse
 pattern = re.compile(r'^(?P<source>\d+|NOT_FOUND)-(?P<destination>\d+|NOT_FOUND)-(?P<timestampz>\d+(.\d+)?).ogg$')

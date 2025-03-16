@@ -1,6 +1,7 @@
 # TypeScrypt
 
 1. [TL;DR](#tldr)
+1. [Libraries of interest](#libraries-of-interest)
 1. [Best practices](#best-practices)
    1. [Use local modules](#use-local-modules)
 1. [Further readings](#further-readings)
@@ -106,6 +107,13 @@ function removeDups<T>(array: T[]): T[] {
 }
 ```
 
+## Libraries of interest
+
+| Library | Summary                  |
+| ------- | ------------------------ |
+| [yaml]  | Parse and stringify YAML |
+
+
 ## Best practices
 
 - Always use `===` and `!==` to check **value equality**, except for `null` checks.
@@ -189,3 +197,4 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 [remove duplicates from array in typescript]: https://stackoverflow.com/questions/63322597/remove-duplicates-from-array-in-typescript#76633098
 [top 12 most useful typescript utility types]: https://timmousk.com/blog/typescript-utility-types/
 [typescript deep dive]: https://basarat.gitbook.io/typescript
+[yaml]: https://github.com/eemeli/yaml/

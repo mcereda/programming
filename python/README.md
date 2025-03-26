@@ -2,6 +2,7 @@
 
 1. [TL;DR](#tldr)
 1. [Modules of interest](#modules-of-interest)
+1. [Parallelization](#parallelization)
 1. [Further readings](#further-readings)
    1. [Sources](#sources)
 
@@ -53,18 +54,25 @@ custom_dict = tuple(custom_dict)
 # Get values from environment variables
 import os
 print(os.environ('HOME'))
-print(os.environ.get('GITLAB_TOKEN', default=None))
+print(os.environ.get('LOG_LEVEL', default=logging.INFO))
+print(os.getenv('GITLAB_TOKEN'))
+print(os.getenv('AWS_PROFILE', default='default'))
 
-# Get function name from inside it
+# Define functions
+def function_name(): pass
+def function_with_arguments(arg1, arg2 = None): pass
+def function_with_type_hinting(arg1: str, arg2: bool | None = False) -> str | None: pass  # from 3.10
+
+# Get function name from inside them
 def function_using_inspect():
     import inspect
-    print(inspect.stack()[0][3])  # function_using_inspect
+    print(inspect.stack()[0][3])  # -> 'function_using_inspect'
 def function_using_sys():
     import sys
-    print(sys._getframe().f_code.co_name)  # function_using_sys
+    print(sys._getframe().f_code.co_name)  # -> 'function_using_sys'
 
 # Set logging per function
-def funct(log_level='WARN'):
+def function_with_logging( log_level: str = 'WARN' ) -> None:
     import logging
     import sys
 
@@ -109,7 +117,7 @@ dry_run: bool = True
 processed: int = 0
 source_name: str = 'test'
 def format_phone_number_old(phone: typing.Optional[str] = None): pass  # python 3.5 to 3.10
-def format_phone_number(phone: str|None): pass  # since python 3.10
+def format_phone_number(phone: str|None) -> None: pass  # since python 3.10
 ```
 
 Generally:
@@ -133,12 +141,21 @@ Generally:
 
 ## Modules of interest
 
-| Module     | Use for                                                                  |
-| ---------- | ------------------------------------------------------------------------ |
-| [boto3]    | Interact with AWS services                                               |
-| [ciso8601] | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
-| [logging]  | Kinda self-explanatory, isn't it?                                        |
-| [psycopg]  | Interact with PostgreSQL databases                                       |
+| Module               | Use for                                                                  |
+| -------------------- | ------------------------------------------------------------------------ |
+| [boto3]              | Interact with AWS services                                               |
+| [ciso8601]           | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
+| [concurrent.futures] | Parallelization                                                          |
+| [logging]            | Kinda self-explanatory, isn't it?                                        |
+| [psycopg]            | Interact with PostgreSQL databases                                       |
+| [tqdm]               | Simplified threading with progress bars                                  |
+
+## Parallelization
+
+TODO
+
+Refer [concurrent.futures] and [tqdm].<br/>
+See also [Using tqdm with concurrent.futures in Python].
 
 ## Further readings
 
@@ -153,6 +170,8 @@ Generally:
 - [Convert List to Set]
 - [When should I use a Map instead of a For Loop?]
 - [Python 3 type hinting for None?]
+- [How to specify multiple return types using type-hints]
+- [Using tqdm with concurrent.futures in Python]
 
 <!--
   Reference
@@ -166,11 +185,15 @@ Generally:
 <!-- Others -->
 [boto3]: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
 [ciso8601]: https://pypi.org/project/ciso8601/
+[concurrent.futures]: https://docs.python.org/3/library/concurrent.futures.html
 [convert list to set]: https://pythonexamples.org/python-convert-list-to-set/
+[how to specify multiple return types using type-hints]: https://stackoverflow.com/questions/33945261/how-to-specify-multiple-return-types-using-type-hints
 [logging]: https://docs.python.org/3/library/logging.html
 [psycopg]: https://www.psycopg.org/
+[python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
 [python tutorial]: https://www.w3schools.com/python
+[tqdm]: https://tqdm.github.io/
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
+[using tqdm with concurrent.futures in python]: https://rednafi.com/python/tqdm_progressbar_with_concurrent_futures/
 [when should i use a map instead of a for loop?]: https://stackoverflow.com/questions/1975250/when-should-i-use-a-map-instead-of-a-for-loop
-[python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none

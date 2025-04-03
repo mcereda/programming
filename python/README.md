@@ -51,6 +51,11 @@ print(f'type: {type(custom_list)}, content: {custom_list}')
 # By using the tuple() function
 custom_dict = tuple(custom_dict)
 
+# Check if one dictionary is subset of another
+whole =  { 'greg': 1, 'knows': 2, 'what': 3, 'is': 4, 'best': 5, 'for': 6, 'himself': 7 }
+part = { 'greg': 1, 'knows': 2, 'himself': 7}
+part_is_subset_of_whole = part.items() <= whole.items()
+
 # Get values from environment variables
 import os
 print(os.environ('HOME'))
@@ -172,6 +177,7 @@ See also [Using tqdm with concurrent.futures in Python].
 - [Python 3 type hinting for None?]
 - [How to specify multiple return types using type-hints]
 - [Using tqdm with concurrent.futures in Python]
+- [Check if one dictionary is subset of other]
 
 <!--
   Reference
@@ -184,6 +190,7 @@ See also [Using tqdm with concurrent.futures in Python].
 
 <!-- Others -->
 [boto3]: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+[check if one dictionary is subset of other]: https://www.geeksforgeeks.org/python-check-if-one-dictionary-is-subset-of-other/
 [ciso8601]: https://pypi.org/project/ciso8601/
 [concurrent.futures]: https://docs.python.org/3/library/concurrent.futures.html
 [convert list to set]: https://pythonexamples.org/python-convert-list-to-set/

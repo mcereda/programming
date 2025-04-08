@@ -3,23 +3,17 @@
 1. [TL;DR](#tldr)
 1. [Modules of interest](#modules-of-interest)
 1. [Parallelization](#parallelization)
+1. [Virtual environments](#virtual-environments)
+   1. [Create virtual environments](#create-virtual-environments)
+   1. [Activate virtual environments](#activate-virtual-environments)
+   1. [Install packages in virtual environments](#install-packages-in-virtual-environments)
+   1. [Manage virtual environments](#manage-virtual-environments)
 1. [Further readings](#further-readings)
    1. [Sources](#sources)
 
 ## TL;DR
 
-```sh
-python3.12 -m 'venv' '.venv'
-
-source '.venv/bin/activate'
-source '.venv/bin/activate.fish'
-
-python3 -m pip install -r 'requirements.txt'
-
-python3 -m pip freeze
-
-deactivate
-```
+Use a [virtual environment][virtual environments] for each project.
 
 ```py
 custom_list = ['apple', 'banana', 'cherry']
@@ -162,9 +156,101 @@ TODO
 Refer [concurrent.futures] and [tqdm].<br/>
 See also [Using tqdm with concurrent.futures in Python].
 
+## Virtual environments
+
+Python's package management implementations suck and create conflicts with each other.
+
+Virtual environments allow managing dependencies separately for different projects.<br/>
+This prevents conflicts and helps maintaining cleaner setups.
+
+Specifically, they:
+
+- Store a specific Python interpreter version, with the libraries and binaries needed to support a project.<br/>
+  These are, by default, **isolated** from software in other virtual environments as well as Python interpreters and
+  libraries installed in the hosting operating system.
+- Are contained to a directory.<br/>
+  This directory is conventionally named `.venv` or `venv` and is stored in the project's root directory.
+- Are preferably **ignored** by source control systems such as `git`.
+- Are considered **disposable** — delete and recreate them any time from scratch.
+- Are **not** considered movable or copyable — just recreate the virtual environment in the target location.
+- Should **not** contain any project-related code.
+
+### Create virtual environments
+
+Leverage the `venv` module to create virtual environments.
+
+```sh
+python3 -m 'venv' '.venv'
+python3.12 -m 'venv' 'venv'
+```
+
+This:
+
+1. Creates the directory containing the environment.<br/>
+   Parent directories are created as needed.
+1. Places a `pyvenv.cfg` file in the environment's directory, with the `home` key pointing to the Python installation
+   used to create the environment.
+1. Creates a `bin` (`Scripts` on Windows) subdirectory, containing a copy (or symlink) of the Python executable.
+1. Creates a `lib/pythonX.Y/site-packages` subdirectory (`Libsite-packages` on Windows).
+1. Invokes `ensurepip` to bootstrap `pip` into the virtual environment, unless the `--without-pip` option is given.
+
+If the virtual environment's directory already exists, it will be re-used.<br/>
+If multiple paths are given in input, it will create identical virtual environments at **each** provided path.
+
+### Activate virtual environments
+
+When running from a virtual environment, a Python interpreter's `sys.prefix` and `sys.exec_prefix` will point to the
+directories of the virtual environment.<br/>
+`sys.base_prefix` and `sys.base_exec_prefix` will point instead to the paths of the Python interpreter used to create
+the environment.
+
+Check `sys.prefix != sys.base_prefix` to determine if the current interpreter is running from a virtual environment.
+
+Virtual environments may be _activated_ using platform-specific scripts in their binary directory (`bin` on POSIX,
+`Scripts` on Windows).<br/>
+The script will **prepend** the virtual environment's binary directory to the user's PATH. From there on, running the
+`python` command will invoke **the environment's** Python interpreter.
+
+```sh
+source '.venv/bin/activate'
+source '.venv/bin/activate.fish'
+```
+
+One is **not** _required_ to activate virtual environments to use them.<br/>
+Instead, one can just _specify the path to that environment's Python interpreter_ when invoking Python commands:
+
+```sh
+.venv/bin/pip --require-virtualenv install -r 'requirements.txt'
+.venv/bin/python3 'app.py'
+```
+
+Deactivate virtual environments by executing `deactivate`.<br/>
+The exact mechanism is platform-specific and is an internal implementation detail. Like activation, a script or shell
+function will be used for this.
+
+### Install packages in virtual environments
+
+```sh
+source '.venv/bin/activate' && python3 -m pip install --requirement 'requirements.txt'
+.venv/bin/pip3 --require-virtualenv install -r 'requirements.txt' --dry-run
+```
+
+### Manage virtual environments
+
+```sh
+# Get installed packages with version.
+python3 -m pip freeze
+pip freeze > 'requirements.txt'
+
+# Upgrade packages.
+sed -e 's/^#.*$//' -e 's/==/>=/' 'requirements.txt' | xargs .venv/bin/pip --require-virtualenv install --upgrade
+pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
+```
+
 ## Further readings
 
 - [Using tabulation in Python logging format]
+- [Python Virtual Environments: A Primer]
 
 ### Sources
 
@@ -184,6 +270,9 @@ See also [Using tqdm with concurrent.futures in Python].
   ═╬═Time══
   -->
 
+<!-- In-article sections -->
+[virtual environments]: #virtual-environments
+
 <!-- Upstream -->
 [install packages in a virtual environment using pip and venv]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
 [venv — creation of virtual environments]: https://docs.python.org/3/library/venv.html
@@ -200,6 +289,7 @@ See also [Using tqdm with concurrent.futures in Python].
 [python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
 [python tutorial]: https://www.w3schools.com/python
+[python virtual environments: a primer]: https://realpython.com/python-virtual-environments-a-primer/
 [tqdm]: https://tqdm.github.io/
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [using tqdm with concurrent.futures in python]: https://rednafi.com/python/tqdm_progressbar_with_concurrent_futures/

@@ -1,6 +1,7 @@
 # TypeScrypt
 
 1. [TL;DR](#tldr)
+1. [Learning resources](#learning-resources)
 1. [Libraries of interest](#libraries-of-interest)
 1. [Best practices](#best-practices)
    1. [Use local modules](#use-local-modules)
@@ -95,6 +96,16 @@ transformedString = sourceString?.replace(/regex/g, "replacementForAll");
 // Transform only the first character of a string to lowercase.
 transformedString = sourceString?.replace(/-?\w/g, match => match.toLowerCase());
 
+// Merge objects
+var objectA = { … };
+var objectB = { … };
+var objectC = {...objectA, ...objectB};
+
+// Merge object types
+type typeA = typeof objectA;
+type typeB = typeof objectB;
+type typeC = typeA & typeB
+
 /**
  * Construct a copy of an array with duplicate items removed.
  * Where duplicate items exist, only the first instance will be kept.
@@ -105,7 +116,14 @@ transformedString = sourceString?.replace(/-?\w/g, match => match.toLowerCase())
 function removeDups<T>(array: T[]): T[] {
     return [...new Set(array)];
 }
+
+https://howjavascriptworks.com/typescript-pick/
 ```
+
+## Learning resources
+
+- [Java-Script How-Works]<br/>
+  Online courses on JavaScript programming.
 
 ## Libraries of interest
 
@@ -168,6 +186,8 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 - [How to Add an Item to an Array in TypeScript if Not Undefined]
 - [Local Paths]
 - [Mastering Typescript Import from Path]
+- [Google TypeScript Style Guide]
+- [TypeScript Pick: Creating Optional Properties]
 
 ### Sources
 
@@ -189,6 +209,7 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 <!-- Others -->
 [contributors coding guidelines]: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
 [deep-equal]: https://www.npmjs.com/package/deep-equal
+[google typescript style guide]: https://google.github.io/styleguide/tsguide.html
 [how to add an item to an array in typescript if not undefined]: https://www.webdevtutor.net/blog/typescript-add-item-to-array-if-not-undefined
 [how to break a string into multiple lines in typescript]: https://www.webdevtutor.net/blog/typescript-break-string-into-multiple-lines
 [how to initialize an empty typed object in typescript?]: https://timmousk.com/blog/typescript-empty-object/
@@ -197,4 +218,6 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 [remove duplicates from array in typescript]: https://stackoverflow.com/questions/63322597/remove-duplicates-from-array-in-typescript#76633098
 [top 12 most useful typescript utility types]: https://timmousk.com/blog/typescript-utility-types/
 [typescript deep dive]: https://basarat.gitbook.io/typescript
+[typescript pick: creating optional properties]: https://howjavascriptworks.com/typescript-pick/
 [yaml]: https://github.com/eemeli/yaml/
+[Java-Script How-Works]: https://howjavascriptworks.com/

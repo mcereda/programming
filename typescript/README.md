@@ -93,7 +93,7 @@ transformedString = sourceString?.replace("substring", "replacement");
 transformedString = sourceString?.replace(/regex/, "replacementFor1");
 // replace all matches of a regexp
 transformedString = sourceString?.replace(/regex/g, "replacementForAll");
-// Transform only the first character of a string to lowercase.
+// transform only the first character of a string to lowercase
 transformedString = sourceString?.replace(/-?\w/g, match => match.toLowerCase());
 
 // Merge objects
@@ -104,7 +104,7 @@ var objectC = {...objectA, ...objectB};
 // Merge object types
 type typeA = typeof objectA;
 type typeB = typeof objectB;
-type typeC = typeA & typeB
+type typeC = typeA & typeB;
 
 /**
  * Construct a copy of an array with duplicate items removed.
@@ -114,10 +114,12 @@ type typeC = typeA & typeB
  * By making the function use a generic type, it can be used with any type of array.
  */
 function removeDups<T>(array: T[]): T[] {
-    return [...new Set(array)];
-}
+    return [...new Set(arrayWithDuplicates)];
+};
+// or just
+return Array.from(new Set(arrayWithDuplicates));
 
-https://howjavascriptworks.com/typescript-pick/
+// FIXME: https://howjavascriptworks.com/typescript-pick/
 ```
 
 ## Learning resources
@@ -148,16 +150,19 @@ https://howjavascriptworks.com/typescript-pick/
 
 ### Use local modules
 
-As of NPM version 2.0.0, one can provide paths to local directories containing packages.
+As of NPM version 2.0.0, one can provide paths to local directories containing typescript/javascript packages.
 
-Local paths can be set via `npm install -S` using any of the following forms:
+For NPM to consider a local directory a package, it must have a `package.json` file in it.
+
+The local package can be set a dependency by executing `npm install -S {{ path }}`, with `{{ path }}` being any of the
+following forms:
 
 - `../foo/bar`
 - `./foo/bar`
 - `~/foo/bar`
 - `/foo/bar`
 
-Paths will be normalized to a **relative** path and added to the `package.json` file:
+Paths will be normalized to a **relative** path and added to the `package.json` file of the **current** package:
 
 ```json
 {
@@ -171,6 +176,14 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 
 > Packages linked by local path will **not** have their own dependencies installed when running `npm install`.<br/>
 > To do that, `npm install` must be executed from inside the local paths.
+
+Should the local directory **not** contain a `package.json` file, it can **still** be included as a dependency by:
+
+1. **Manually** changing the `package.json` file of the **current** package.
+1. Running `npm install` in the current package's directory.
+
+An alternative to this process is to `npm-link` the directories instead.<br/>
+Refer [npm-link].
 
 ## Further readings
 
@@ -203,8 +216,9 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 [codebase]: https://github.com/microsoft/TypeScript/
 [documentation]: https://www.typescriptlang.org/docs/
 [local paths]: https://docs.npmjs.com/cli/v11/configuring-npm/package-json#local-paths
-[website]: https://www.typescriptlang.org/
+[npm-link]: https://docs.npmjs.com/cli/v11/commands/npm-link
 [playground]: https://www.typescriptlang.org/play/
+[website]: https://www.typescriptlang.org/
 
 <!-- Others -->
 [contributors coding guidelines]: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines

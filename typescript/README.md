@@ -120,6 +120,12 @@ function removeDups<T>(array: T[]): T[] {
 return Array.from(new Set(arrayWithDuplicates));
 
 // FIXME: https://howjavascriptworks.com/typescript-pick/
+
+// Strings to numbers
+Number('123');
++'123';
+parseInt('123', 10);
+parseFloat('123.45')
 ```
 
 ## Learning resources

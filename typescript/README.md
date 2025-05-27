@@ -121,11 +121,14 @@ return Array.from(new Set(arrayWithDuplicates));
 
 // FIXME: https://howjavascriptworks.com/typescript-pick/
 
-// Strings to numbers
+// Convert strings to numbers
 Number('123');
 +'123';
 parseInt('123', 10);
-parseFloat('123.45')
+parseFloat('123.45');
+
+// Check a value is in an array
+myArray.includes('three')
 ```
 
 ## Learning resources

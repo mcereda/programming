@@ -145,7 +145,8 @@ Generally:
 | [boto3]              | Interact with AWS services                                               |
 | [ciso8601]           | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
 | [concurrent.futures] | Parallelization                                                          |
-| [logging]            | Kinda self-explanatory, isn't it?                                        |
+| [dask]               | Parallel and distributed computing                                       |
+| [logging]            | Logging                                                                  |
 | [psycopg]            | Interact with PostgreSQL databases                                       |
 | [tqdm]               | Simplified threading with progress bars                                  |
 
@@ -283,6 +284,7 @@ pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
 [ciso8601]: https://pypi.org/project/ciso8601/
 [concurrent.futures]: https://docs.python.org/3/library/concurrent.futures.html
 [convert list to set]: https://pythonexamples.org/python-convert-list-to-set/
+[dask]: https://www.dask.org/
 [how to specify multiple return types using type-hints]: https://stackoverflow.com/questions/33945261/how-to-specify-multiple-return-types-using-type-hints
 [logging]: https://docs.python.org/3/library/logging.html
 [psycopg]: https://www.psycopg.org/

@@ -177,6 +177,7 @@ Paths will be normalized to a **relative** path and added to the `package.json` 
 {
   "name": "baz",
   "dependencies": {
+    "foo": "file:foo",
     "bar": "file:../foo/bar",
     "@custom/lib": "file://../lib"
   }

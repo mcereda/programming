@@ -8,6 +8,9 @@
    1. [Activate virtual environments](#activate-virtual-environments)
    1. [Install packages in virtual environments](#install-packages-in-virtual-environments)
    1. [Manage virtual environments](#manage-virtual-environments)
+1. [Packages](#packages)
+1. [Plugin systems](#plugin-systems)
+   1. [Self-registration via decorator](#self-registration-via-decorator)
 1. [Further readings](#further-readings)
    1. [Sources](#sources)
 
@@ -247,6 +250,20 @@ pip freeze > 'requirements.txt'
 sed -e 's/^#.*$//' -e 's/==/>=/' 'requirements.txt' | xargs .venv/bin/pip --require-virtualenv install --upgrade
 pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
 ```
+
+## Packages
+
+TODO
+
+## Plugin systems
+
+### Self-registration via decorator
+
+Plugins manage themselves.<br/>
+Adding a new plugin is just a matter of dropping in a `.py` file using a decorated function.<br/>
+No need to manually update lists or registries.
+
+See the [experiment](./experiments/plugin_systems/self-registration_via_decorator/README.md).
 
 ## Further readings
 

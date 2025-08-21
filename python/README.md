@@ -16,7 +16,7 @@
 
 ## TL;DR
 
-Use a [virtual environment][virtual environments] for each project.
+Prefer using a [virtual environment][virtual environments] for each project.
 
 ```py
 custom_list = ['apple', 'banana', 'cherry']
@@ -31,24 +31,36 @@ print(len(custom_list))
 print(len(custom_dict))
 
 # Unset variables
-# By deleting their value and letting the garbage collector take care of it
+# by deleting their value and letting the garbage collector take care of it
 kwargs = None
-# By deleting their reference
+# by deleting their reference
 del kwargs
 
+# Sort lists
+# in place
+orig_list.sort(key=lambda x: x.count, reverse=True)
+# by returning a new one
+new_list = sorted(orig_list, key=lambda x: x.count, reverse=True)
+
 # Convert lists to sets
-# By using the set() function
+# by using the set() function
 custom_list = set(custom_list)
 print(f'type: {type(custom_list)}, content: {custom_list}')
-# By unpacking the list's items to form the set
+# by unpacking the list's items to form the set
 custom_list = {*custom_list}
 print(f'type: {type(custom_list)}, content: {custom_list}')
 
 # Convert dictionaries to tuples
-# By using the tuple() function
+# by using the tuple() function
 custom_dict = tuple(custom_dict)
 
-# Check if one dictionary is subset of another
+# Check a dictionary contains a key
+if 'key_name' in dictionary: pass
+
+# Provide a default value when a key does not exist in a dictionary
+dictionary.get('key_name', 42)
+
+# Check if a dictionary is subset of another
 whole =  { 'greg': 1, 'knows': 2, 'what': 3, 'is': 4, 'best': 5, 'for': 6, 'himself': 7 }
 part = { 'greg': 1, 'knows': 2, 'himself': 7}
 part_is_subset_of_whole = part.items() <= whole.items()
@@ -98,7 +110,7 @@ Work with regular expressions:
 import re
 
 # Just check for matches
-# Returns a match object that can be used in conditionals (evaluates True if matched)
+# returns a match object that can be used in conditionals (evaluates True if matched)
 re.match(r".* something .*", 'find if something matches')
 
 # Parse
@@ -143,14 +155,16 @@ Generally:
 
 ## Modules of interest
 
-| Module               | Use for                                                                  |
+| Module               | Use cases                                                                |
 | -------------------- | ------------------------------------------------------------------------ |
+| [bitmath]            | Interact with file sizes in various units                                |
 | [boto3]              | Interact with AWS services                                               |
 | [ciso8601]           | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
 | [concurrent.futures] | Parallelization                                                          |
 | [dask]               | Parallel and distributed computing                                       |
 | [logging]            | Logging                                                                  |
 | [psycopg]            | Interact with PostgreSQL databases                                       |
+| [tabulate]           | Pretty-print tabular data                                                |
 | [tqdm]               | Simplified threading with progress bars                                  |
 
 ## Parallelization
@@ -282,6 +296,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 - [How to specify multiple return types using type-hints]
 - [Using tqdm with concurrent.futures in Python]
 - [Check if one dictionary is subset of other]
+- [Python void return type annotation]
 
 <!--
   Reference
@@ -296,6 +311,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [venv — creation of virtual environments]: https://docs.python.org/3/library/venv.html
 
 <!-- Others -->
+[bitmath]: https://bitmath.readthedocs.io/en/latest/module.html
 [boto3]: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
 [check if one dictionary is subset of other]: https://www.geeksforgeeks.org/python-check-if-one-dictionary-is-subset-of-other/
 [ciso8601]: https://pypi.org/project/ciso8601/
@@ -309,6 +325,8 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
 [python tutorial]: https://www.w3schools.com/python
 [python virtual environments: a primer]: https://realpython.com/python-virtual-environments-a-primer/
+[Python void return type annotation]: https://stackoverflow.com/questions/36797282/python-void-return-type-annotation
+[tabulate]: https://pypi.org/project/tabulate/
 [tqdm]: https://tqdm.github.io/
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [using tqdm with concurrent.futures in python]: https://rednafi.com/python/tqdm_progressbar_with_concurrent_futures/

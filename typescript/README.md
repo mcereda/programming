@@ -43,6 +43,11 @@ TypeScript:
 
 Quickly test stuff in the [playground].
 
+```sh
+npm install typescript --save-dev
+npx tsc
+```
+
 ```ts
 // single-line comment
 /* comment block */
@@ -129,6 +134,20 @@ parseFloat('123.45');
 
 // Check a value is in an array
 myArray.includes('three')
+
+// Loop over lists
+let list = [4, 5, 6];
+for (let i in list) {  // iterate over indices
+  console.log(i);      // "0", "1", "2"
+};
+for (let v of list) {  // iterate over values
+  console.log(v);      // 4, 5, 6
+};
+list.forEach(          // iterate over values
+  e => console.log(e)  // 4, 5, 6
+);
+
+// Loop over key:values pairs
 ```
 
 ## Learning resources

@@ -166,6 +166,7 @@ Generally:
 | [psycopg]            | Interact with PostgreSQL databases                                       |
 | [tabulate]           | Pretty-print tabular data                                                |
 | [tqdm]               | Simplified threading with progress bars                                  |
+| [typer]              | CLI applications                                                         |
 
 ## Parallelization
 
@@ -328,6 +329,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [Python void return type annotation]: https://stackoverflow.com/questions/36797282/python-void-return-type-annotation
 [tabulate]: https://pypi.org/project/tabulate/
 [tqdm]: https://tqdm.github.io/
+[typer]: https://github.com/fastapi/typer
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [using tqdm with concurrent.futures in python]: https://rednafi.com/python/tqdm_progressbar_with_concurrent_futures/
 [when should i use a map instead of a for loop?]: https://stackoverflow.com/questions/1975250/when-should-i-use-a-map-instead-of-a-for-loop

@@ -163,6 +163,7 @@ Generally:
 | [concurrent.futures] | Parallelization                                                          |
 | [dask]               | Parallel and distributed computing                                       |
 | [logging]            | Logging                                                                  |
+| [mypy]               | Static type checking                                                     |
 | [psycopg]            | Interact with PostgreSQL databases                                       |
 | [tabulate]           | Pretty-print tabular data                                                |
 | [tqdm]               | Simplified threading with progress bars                                  |
@@ -284,6 +285,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 
 - [Using tabulation in Python logging format]
 - [Python Virtual Environments: A Primer]
+- [mypy documentation]
 
 ### Sources
 
@@ -298,6 +300,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 - [Using tqdm with concurrent.futures in Python]
 - [Check if one dictionary is subset of other]
 - [Python void return type annotation]
+- [Type hints cheat sheet]
 
 <!--
   Reference
@@ -321,6 +324,8 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [dask]: https://www.dask.org/
 [how to specify multiple return types using type-hints]: https://stackoverflow.com/questions/33945261/how-to-specify-multiple-return-types-using-type-hints
 [logging]: https://docs.python.org/3/library/logging.html
+[mypy documentation]: https://mypy.readthedocs.io/en/stable/
+[mypy]: https://github.com/python/mypy
 [psycopg]: https://www.psycopg.org/
 [python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
@@ -329,6 +334,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [Python void return type annotation]: https://stackoverflow.com/questions/36797282/python-void-return-type-annotation
 [tabulate]: https://pypi.org/project/tabulate/
 [tqdm]: https://tqdm.github.io/
+[Type hints cheat sheet]: https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html
 [typer]: https://github.com/fastapi/typer
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [using tqdm with concurrent.futures in python]: https://rednafi.com/python/tqdm_progressbar_with_concurrent_futures/

@@ -65,6 +65,9 @@ whole =  { 'greg': 1, 'knows': 2, 'what': 3, 'is': 4, 'best': 5, 'for': 6, 'hims
 part = { 'greg': 1, 'knows': 2, 'himself': 7}
 part_is_subset_of_whole = part.items() <= whole.items()
 
+# Show available (imported and built-in) modules
+print(globals())
+
 # Get values from environment variables
 import os
 print(os.environ('HOME'))

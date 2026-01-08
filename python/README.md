@@ -67,6 +67,7 @@ part_is_subset_of_whole = part.items() <= whole.items()
 
 # Show available (imported and built-in) modules
 print(globals())
+print(locals())
 
 # Get values from environment variables
 import os
@@ -304,6 +305,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 - [Check if one dictionary is subset of other]
 - [Python void return type annotation]
 - [Type hints cheat sheet]
+- [Namespaces in Python]
 
 <!--
   Reference
@@ -329,6 +331,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [logging]: https://docs.python.org/3/library/logging.html
 [mypy documentation]: https://mypy.readthedocs.io/en/stable/
 [mypy]: https://github.com/python/mypy
+[Namespaces in Python]: https://realpython.com/python-namespace/
 [psycopg]: https://www.psycopg.org/
 [python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line

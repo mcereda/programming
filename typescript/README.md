@@ -239,6 +239,7 @@ Refer [npm-link].
 
 - [Nullish Coalescing: The ?? Operator in TypeScript]
 - [Remove duplicates from array in typescript]
+- [How do I get the path to the current script with Node.js?]
 
 <!--
   Reference
@@ -257,9 +258,11 @@ Refer [npm-link].
 [contributors coding guidelines]: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
 [deep-equal]: https://www.npmjs.com/package/deep-equal
 [google typescript style guide]: https://google.github.io/styleguide/tsguide.html
+[How do I get the path to the current script with Node.js?]: https://stackoverflow.com/questions/3133243/how-do-i-get-the-path-to-the-current-script-with-node-js#3133313
 [how to add an item to an array in typescript if not undefined]: https://www.webdevtutor.net/blog/typescript-add-item-to-array-if-not-undefined
 [how to break a string into multiple lines in typescript]: https://www.webdevtutor.net/blog/typescript-break-string-into-multiple-lines
 [how to initialize an empty typed object in typescript?]: https://timmousk.com/blog/typescript-empty-object/
+[Java-Script How-Works]: https://howjavascriptworks.com/
 [mastering typescript import from path]: https://www.webdevtutor.net/blog/typescript-import-from-path
 [nullish coalescing: the ?? operator in typescript]: https://mariusschulz.com/blog/nullish-coalescing-the-operator-in-typescript
 [remove duplicates from array in typescript]: https://stackoverflow.com/questions/63322597/remove-duplicates-from-array-in-typescript#76633098
@@ -267,4 +270,3 @@ Refer [npm-link].
 [typescript deep dive]: https://basarat.gitbook.io/typescript
 [typescript pick: creating optional properties]: https://howjavascriptworks.com/typescript-pick/
 [yaml]: https://github.com/eemeli/yaml/
-[Java-Script How-Works]: https://howjavascriptworks.com/

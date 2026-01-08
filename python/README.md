@@ -69,6 +69,9 @@ part_is_subset_of_whole = part.items() <= whole.items()
 print(globals())
 print(locals())
 
+# Check a module is imported
+'os' in globals()
+
 # Get values from environment variables
 import os
 print(os.environ('HOME'))

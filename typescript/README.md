@@ -148,6 +148,10 @@ list.forEach(          // iterate over values
 );
 
 // Loop over key:values pairs
+
+// module-level variables
+console.log(__filename);  // absolute path of the current module's file
+console.log(__dirname);   // absolute path of the current module's directory
 ```
 
 ## Learning resources

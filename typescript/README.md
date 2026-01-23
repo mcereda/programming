@@ -84,9 +84,6 @@ const hasName = !!name;
 // Assert some value is non-null and non-undefined in contexts where the type checker is unable to conclude that fact.
 const keyName = keyPair_output.apply(kp => kp.keyName!);
 
-// Remove undefined values from arrays.
-const cleanArray = originalArray.filter(item => item !== undefined);
-
 // Provide fallback values in case the primary value is `null` or `undefined`.
 // value ?? fallback
 const prettyPrint = options.prettyPrint ?? true;
@@ -152,6 +149,14 @@ list.forEach(          // iterate over values
 // module-level variables
 console.log(__filename);  // absolute path of the current module's file
 console.log(__dirname);   // absolute path of the current module's directory
+
+// find the *first* object in an array that satisfies a condition
+someObjectsList.find(sol => sol.name === 'app');
+// return a list with *all* the objects from a source array that satisfies a condition
+anotherObjectsList.filter(aol => aol.port === 5432);
+
+// Remove undefined values from arrays.
+const cleanArray = originalArray.filter(item => item !== undefined);
 ```
 
 ## Learning resources
@@ -240,6 +245,7 @@ Refer [npm-link].
 - [Nullish Coalescing: The ?? Operator in TypeScript]
 - [Remove duplicates from array in typescript]
 - [How do I get the path to the current script with Node.js?]
+- [How to Search an Array of Objects by Property in TypeScript?]
 
 <!--
   Reference
@@ -262,6 +268,7 @@ Refer [npm-link].
 [how to add an item to an array in typescript if not undefined]: https://www.webdevtutor.net/blog/typescript-add-item-to-array-if-not-undefined
 [how to break a string into multiple lines in typescript]: https://www.webdevtutor.net/blog/typescript-break-string-into-multiple-lines
 [how to initialize an empty typed object in typescript?]: https://timmousk.com/blog/typescript-empty-object/
+[How to Search an Array of Objects by Property in TypeScript?]: https://pythonguides.com/search-an-array-of-objects-by-property-in-typescript/
 [Java-Script How-Works]: https://howjavascriptworks.com/
 [mastering typescript import from path]: https://www.webdevtutor.net/blog/typescript-import-from-path
 [nullish coalescing: the ?? operator in typescript]: https://mariusschulz.com/blog/nullish-coalescing-the-operator-in-typescript

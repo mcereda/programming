@@ -1,14 +1,15 @@
 # Python
 
 1. [TL;DR](#tldr)
+1. [Learning material](#learning-material)
+1. [Virtual environments](#virtual-environments)
+   1. [Creating virtual environments](#creating-virtual-environments)
+   1. [Activating virtual environments](#activating-virtual-environments)
+   1. [Installing packages in virtual environments](#installing-packages-in-virtual-environments)
+   1. [Managing virtual environments](#managing-virtual-environments)
 1. [Modules of interest](#modules-of-interest)
 1. [Parallelization](#parallelization)
-1. [Virtual environments](#virtual-environments)
-   1. [Create virtual environments](#create-virtual-environments)
-   1. [Activate virtual environments](#activate-virtual-environments)
-   1. [Install packages in virtual environments](#install-packages-in-virtual-environments)
-   1. [Manage virtual environments](#manage-virtual-environments)
-1. [Packages](#packages)
+1. [Packaging](#packaging)
 1. [Plugin systems](#plugin-systems)
    1. [Self-registration via decorator](#self-registration-via-decorator)
 1. [Further readings](#further-readings)
@@ -16,31 +17,76 @@
 
 ## TL;DR
 
-Prefer using a [virtual environment][virtual environments] for each project.
+Prefer giving each project its own private [virtual environment][virtual environments].
 
 ```py
-custom_list = ['apple', 'banana', 'cherry']
-custom_dict = {
+# Built-in types
+boolean_value = True
+boolean_value = False
+integer_value = 1000000
+integer_value = 1_000_000
+floating_point_value = 2.8
+complex_value = 1j
+string_value = 'some value'
+string_value = "some other value"
+a_list = ['apple', 'banana', 'cherry', 7, True]
+a_tuple = ("apple", "banana", "cherry", 42, False)  # ordered, unchangeable list
+a_set = {"apple", "banana", "cherry", 42, False}    # unordered, non-indexed collection of unchangeable items
+a_dictionary = {                                    # ordered (since v3.7) collection of non-duplicable key:value pairs
     "brand": "Ford",
     "model": "Mustang",
     "year": 1964
 }
+a_dictionary = dict(
+    name = "John",
+    age = 36,
+    country = "Norway",
+)
+
+# Get variables' type
+type(True)           # -> <class 'bool'>
+type(1000000)        # -> <class 'int'>
+type(1_000_000)      # -> <class 'int'>
+type(2.8)            # -> <class 'float'>
+type(1j)             # -> <class 'complex'>
+type('some string')  # -> <class 'str'>
+type([])             # -> <class 'list'>
+type(set())          # -> <class 'set'>
+type({})             # -> <class 'dict'>
+type(tuple())        # -> <class 'tuple'>
+
+# Convert between types
+bool('some string')                   # -> True
+bool(0)                               # -> False
+int(2.8)                              # -> 2
+int('10')                             # -> 10
+float(28)                             # -> 28.0
+float('42')                           # -> 42.0
+complex(21)                           # -> (2+0j)
+str(False)                            # -> 'False'
+str(1)                                # -> '1'
+list(("apple", "banana", "cherry"))   # -> ['apple', 'banana', 'cherry']
+tuple(["apple", "banana", "cherry"])  # -> ('apple', 'banana', 'cherry')
+set(['banana', 'cherry', 'apple'])    # -> {'banana', 'cherry', 'apple'}
+tuple({"some": "dict"})               # -> ('some',)
+set({"some": "dict"})                 # -> {'some'}
 
 # Get lengths
-print(len(custom_list))
-print(len(custom_dict))
+print(len(a_list))
+print(len(a_dict))
 
 # Unset variables
-# by deleting their value and letting the garbage collector take care of it
-kwargs = None
-# by deleting their reference
-del kwargs
+kwargs = None  # deletes the value, and lets the garbage collector take care of memory from here
+del kwargs     # deletes the variable's reference immediately
+
+# Ask users for input
+print("Enter your name:")
+name = input()
+print(f"Hello {name}")
 
 # Sort lists
-# in place
-orig_list.sort(key=lambda x: x.count, reverse=True)
-# by returning a new one
-new_list = sorted(orig_list, key=lambda x: x.count, reverse=True)
+orig_list.sort(key=lambda x: x.count, reverse=True)                # sort in place
+new_list = sorted(orig_list, key=lambda x: x.count, reverse=True)  # return a new, sorted list
 
 # Convert lists to sets
 # by using the set() function
@@ -49,10 +95,6 @@ print(f'type: {type(custom_list)}, content: {custom_list}')
 # by unpacking the list's items to form the set
 custom_list = {*custom_list}
 print(f'type: {type(custom_list)}, content: {custom_list}')
-
-# Convert dictionaries to tuples
-# by using the tuple() function
-custom_dict = tuple(custom_dict)
 
 # Check a dictionary contains a key
 if 'key_name' in dictionary: pass
@@ -138,15 +180,14 @@ dry_run: bool = True
 processed: int = 0
 source_name: str = 'test'
 def format_phone_number_old(phone: typing.Optional[str] = None): pass  # python 3.5 to 3.10
-def format_phone_number(phone: str|None) -> None: pass  # since python 3.10
+def format_phone_number(phone: str|None) -> None: pass                 # since python 3.10
 ```
 
 Generally:
 
 - `map()` =~ plain `for` loop =~ operation in constructor performance-wise.
 
-  <details>
-    <summary>Reasoning</summary>
+  <details style='padding: 0 0 1rem 1rem'>
 
   See [When should I use a Map instead of a For Loop?].
 
@@ -160,32 +201,13 @@ Generally:
 
   </details>
 
-## Modules of interest
+## Learning material
 
-| Module               | Use cases                                                                |
-| -------------------- | ------------------------------------------------------------------------ |
-| [bitmath]            | Interact with file sizes in various units                                |
-| [boto3]              | Interact with AWS services                                               |
-| [ciso8601]           | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
-| [concurrent.futures] | Parallelization                                                          |
-| [dask]               | Parallel and distributed computing                                       |
-| [logging]            | Logging                                                                  |
-| [mypy]               | Static type checking                                                     |
-| [psycopg]            | Interact with PostgreSQL databases                                       |
-| [tabulate]           | Pretty-print tabular data                                                |
-| [tqdm]               | Simplified threading with progress bars                                  |
-| [typer]              | CLI applications                                                         |
-
-## Parallelization
-
-TODO
-
-Refer [concurrent.futures] and [tqdm].<br/>
-See also [Using tqdm with concurrent.futures in Python].
+- W3C's [Python tutorial][w3c python tutorial]
 
 ## Virtual environments
 
-Python's package management implementations suck and create conflicts with each other.
+Most Python's package management implementations suck, and create conflicts with each other.
 
 Virtual environments allow managing dependencies separately for different projects.<br/>
 This prevents conflicts and helps maintaining cleaner setups.
@@ -202,7 +224,10 @@ Specifically, they:
 - Are **not** considered movable or copyable — just recreate the virtual environment in the target location.
 - Should **not** contain any project-related code.
 
-### Create virtual environments
+> [!tip]
+> Prefer giving each project its own private [virtual environment][virtual environments].
+
+### Creating virtual environments
 
 Leverage the `venv` module to create virtual environments.
 
@@ -224,7 +249,7 @@ This:
 If the virtual environment's directory already exists, it will be re-used.<br/>
 If multiple paths are given in input, it will create identical virtual environments at **each** provided path.
 
-### Activate virtual environments
+### Activating virtual environments
 
 When running from a virtual environment, a Python interpreter's `sys.prefix` and `sys.exec_prefix` will point to the
 directories of the virtual environment.<br/>
@@ -255,14 +280,14 @@ Deactivate virtual environments by executing `deactivate`.<br/>
 The exact mechanism is platform-specific and is an internal implementation detail. Like activation, a script or shell
 function will be used for this.
 
-### Install packages in virtual environments
+### Installing packages in virtual environments
 
 ```sh
 source '.venv/bin/activate' && python3 -m pip install --requirement 'requirements.txt'
 .venv/bin/pip3 --require-virtualenv install -r 'requirements.txt' --dry-run
 ```
 
-### Manage virtual environments
+### Managing virtual environments
 
 ```sh
 # Get installed packages with version.
@@ -274,7 +299,30 @@ sed -e 's/^#.*$//' -e 's/==/>=/' 'requirements.txt' | xargs .venv/bin/pip --requ
 pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
 ```
 
-## Packages
+## Modules of interest
+
+| Module               | Use cases                                                                |
+| -------------------- | ------------------------------------------------------------------------ |
+| [bitmath]            | Interact with file sizes in various units                                |
+| [boto3]              | Interact with AWS services                                               |
+| [ciso8601]           | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
+| [concurrent.futures] | Parallelization                                                          |
+| [dask]               | Parallel and distributed computing                                       |
+| [logging]            | Logging                                                                  |
+| [mypy]               | Static type checking                                                     |
+| [psycopg]            | Interact with PostgreSQL databases                                       |
+| [tabulate]           | Pretty-print tabular data                                                |
+| [tqdm]               | Simplified threading with progress bars                                  |
+| [typer]              | CLI applications                                                         |
+
+## Parallelization
+
+TODO
+
+Refer [concurrent.futures] and [tqdm].<br/>
+See also [Using tqdm with concurrent.futures in Python].
+
+## Packaging
 
 TODO
 
@@ -299,7 +347,6 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 - [venv — creation of virtual environments]
 - [Install packages in a virtual environment using pip and venv]
 - [Python module import: single-line vs multi-line]
-- [Python tutorial]
 - [Convert List to Set]
 - [When should I use a Map instead of a For Loop?]
 - [Python 3 type hinting for None?]
@@ -338,7 +385,6 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [psycopg]: https://www.psycopg.org/
 [python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
-[python tutorial]: https://www.w3schools.com/python
 [python virtual environments: a primer]: https://realpython.com/python-virtual-environments-a-primer/
 [Python void return type annotation]: https://stackoverflow.com/questions/36797282/python-void-return-type-annotation
 [tabulate]: https://pypi.org/project/tabulate/
@@ -347,4 +393,5 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [typer]: https://github.com/fastapi/typer
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [using tqdm with concurrent.futures in python]: https://rednafi.com/python/tqdm_progressbar_with_concurrent_futures/
+[w3c python tutorial]: https://www.w3schools.com/python
 [when should i use a map instead of a for loop?]: https://stackoverflow.com/questions/1975250/when-should-i-use-a-map-instead-of-a-for-loop

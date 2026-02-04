@@ -2,7 +2,7 @@
 
 ## Best practices
 
-- Make changes easy, avoid making easy changes.
+- Make changes easy, avoid making _easy changes_.
 - Keep changes in _behaviour_ and _structure_ separated.
 - Mind [code coupling and cohesion][a daily practice of empirical software design by kent beck at ddd europe 2023].
 - Keep your code separated from the products you decide to rely upon.<br/>

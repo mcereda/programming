@@ -205,6 +205,16 @@ Generally:
 
 - W3C's [Python tutorial][w3c python tutorial]
 
+Fast-track:
+
+1. Learn Object-Oriented Programming's basic concepts.
+1. Read code made by others.<br/>
+   Goal: understand the code.
+1. Reimplement or improve existing pieces of code.<br/>
+   Goal: understand the reasoning behind the code.
+1. Create small utilities for yourself.
+1. Grow your code in complexity.
+
 ## Virtual environments
 
 Most Python's package management implementations suck, and create conflicts with each other.
@@ -310,7 +320,9 @@ pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
 | [dask]               | Parallel and distributed computing                                       |
 | [logging]            | Logging                                                                  |
 | [mypy]               | Static type checking                                                     |
+| [playwright]         | Automate browser windows                                                 |
 | [psycopg]            | Interact with PostgreSQL databases                                       |
+| [selenium]           | Automate browser windows                                                 |
 | [tabulate]           | Pretty-print tabular data                                                |
 | [tqdm]               | Simplified threading with progress bars                                  |
 | [typer]              | CLI applications                                                         |
@@ -382,11 +394,13 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [mypy documentation]: https://mypy.readthedocs.io/en/stable/
 [mypy]: https://github.com/python/mypy
 [Namespaces in Python]: https://realpython.com/python-namespace/
+[playwright]: https://playwright.dev/python/
 [psycopg]: https://www.psycopg.org/
 [python 3 type hinting for none?]: https://stackoverflow.com/questions/19202633/python-3-type-hinting-for-none
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
 [python virtual environments: a primer]: https://realpython.com/python-virtual-environments-a-primer/
 [Python void return type annotation]: https://stackoverflow.com/questions/36797282/python-void-return-type-annotation
+[selenium]: https://pypi.org/project/selenium/
 [tabulate]: https://pypi.org/project/tabulate/
 [tqdm]: https://tqdm.github.io/
 [Type hints cheat sheet]: https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html

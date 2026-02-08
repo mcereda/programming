@@ -8,54 +8,116 @@
    1. [Installing packages in virtual environments](#installing-packages-in-virtual-environments)
    1. [Managing virtual environments](#managing-virtual-environments)
 1. [Modules of interest](#modules-of-interest)
-1. [Parallelization](#parallelization)
-1. [Packaging](#packaging)
+1. [Performances](#performances)
+   1. [Parallelizing tasks](#parallelizing-tasks)
 1. [Plugin systems](#plugin-systems)
    1. [Self-registration via decorator](#self-registration-via-decorator)
+1. [Packaging applications](#packaging-applications)
 1. [Further readings](#further-readings)
    1. [Sources](#sources)
 
 ## TL;DR
 
-Prefer giving each project its own private [virtual environment][virtual environments].
+Object-oriented programming language. Everything in Python is an _object_.<br/>
+Objects are instances of what _classes_ define.
+
+`#` starts a comment from that point to the end of the line.<br/>
+`"""` start and close a multiline comment.
+
+<details style='padding: 0 0 1rem 1rem'>
 
 ```py
-# Built-in types
-boolean_value = True
-boolean_value = False
-integer_value = 1000000
-integer_value = 1_000_000
-floating_point_value = 2.8
-complex_value = 1j
-string_value = 'some value'
-string_value = "some other value"
-a_list = ['apple', 'banana', 'cherry', 7, True]
-a_tuple = ("apple", "banana", "cherry", 42, False)  # ordered, unchangeable list
-a_set = {"apple", "banana", "cherry", 42, False}    # unordered, non-indexed collection of unchangeable items
-a_dictionary = {                                    # ordered (since v3.7) collection of non-duplicable key:value pairs
-    "brand": "Ford",
-    "model": "Mustang",
-    "year": 1964
-}
-a_dictionary = dict(
-    name = "John",
-    age = 36,
-    country = "Norway",
-)
+# this only lasts one line
 
-# Get variables' type
-type(True)           # -> <class 'bool'>
-type(1000000)        # -> <class 'int'>
-type(1_000_000)      # -> <class 'int'>
-type(2.8)            # -> <class 'float'>
-type(1j)             # -> <class 'complex'>
-type('some string')  # -> <class 'str'>
-type([])             # -> <class 'list'>
-type(set())          # -> <class 'set'>
-type({})             # -> <class 'dict'>
-type(tuple())        # -> <class 'tuple'>
+"""
+this is a multiline comment
+mostly used for documentation
+"""
+```
+
+</details>
+
+The syntax offers some _built-in types_.<br/>
+One can create new types by defining a new class for it.
+
+<details style='padding: 0 0 1rem 1rem'>
+
+| Type           | Key       | Summary                                                                         | Examples                                                   |
+| -------------- | --------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Null/None      | `None`    | Absence of a value                                                              | `None`                                                     |
+| Boolean        | `bool`    | Value that can be considered only true or false                                 | `True`, `False`                                            |
+| Text/String    | `str`     | Sequence of characters                                                          | `'some value'`, `"some other value"`                       |
+| Integer        | `int`     | Whole number                                                                    | `1`, `-50`                                                 |
+| Floating point | `float`   | Number with a decimal point                                                     | `2.8`                                                      |
+| Complex        | `complex` | Number with a real and an imaginary part                                        | `1j`                                                       |
+| List           | `list`    | Ordered sequence of items                                                       | `['apple', 'banana', 'cherry', 7, True]`                   |
+| Tuple          | `tuple`   | Ordered, immutable sequence of items                                            | `("apple", "banana", "cherry", 42, False)`, `('element',)` |
+| Set            | `set`     | Unordered, non-indexed collection of unchangeable items                         | `{"apple", "banana", "cherry", 42, False}`                 |
+| Dictionary     | `dict`    | Collection of key-value pairs, where the key is unique.<br/>Ordered since v3.7. | `{'name': 'John', 'age': 30}`                              |
+
+</details>
+
+_Variables_ store values so that they can be reused later.<br/>
+They can be reassigned to hold a different value later in the code. That value can be null.<br/>
+_Declaring_ variables requires assigning them a value.<br/>
+Python is _dynamically_ typed. A variable can be assigned a value of  **any** type.<br/>
+Since v3.5, the syntax allows _hinting_ (but _not_ forcing) what type a variable is holding.
+
+<details style='padding: 0 0 1rem 1rem'>
+
+```py
+# Declaring variables
+
+the_null_value = None
+hinted_null_value: None = None
+
+a_boolean = True
+a_hinted_boolean: bool = False
+
+a_string = 'some string'
+a_hinted_string: str = "Hello, world!"
+
+an_integer = 123456
+a_more_convenient_way_to_write_big_numbers: int = 1_000_000
+a_floating_point_number = 3.1
+a_complex_number = 1j
+
+a_list = [ 'apple', 7, True ]
+a_list_with_only_1_element = [ 'pineapple' ]
+an_empty_list = []
+a_tuple = ( "kiwi", 4j, 'cherry', 42, False )
+a_tuple_with_only_1_element = ( 'lemon', )     # requires the final ','
+an_empty_tuple = ()
+a_set = { "banana", "orange", 21, False }
+
+a_dictionary = { "brand": "Ford", 'model':"Mustang", "year": 1964 }
+an_empty_dictionary = {}
+
+
+# Use variables
+
+print("a_boolean:", a_boolean)
+a_new_string = a_hinted_string + " " + a_string
+a_specific_value_from_a_sequence = a_list[2]
+a_specific_value_from_a_mapping = a_dict['brand']
+
+
+# Getting variables' type
+
+type(the_null_value)            # -> <class 'NoneType'>
+type(a_boolean)                 # -> <class 'bool'>
+type(a_string)                  # -> <class 'str'>
+type(an_integer)                # -> <class 'int'>
+type(2a_floating_point_number)  # -> <class 'float'>
+type(a_complex_number)          # -> <class 'complex'>
+type(a_list)                    # -> <class 'list'>
+type(a_tuple)                   # -> <class 'tuple'>
+type(a_set)                     # -> <class 'set'>
+type(a_dict)                    # -> <class 'dict'>
+
 
 # Convert between types
+
 bool('some string')                   # -> True
 bool(0)                               # -> False
 int(2.8)                              # -> 2
@@ -70,6 +132,57 @@ tuple(["apple", "banana", "cherry"])  # -> ('apple', 'banana', 'cherry')
 set(['banana', 'cherry', 'apple'])    # -> {'banana', 'cherry', 'apple'}
 tuple({"some": "dict"})               # -> ('some',)
 set({"some": "dict"})                 # -> {'some'}
+```
+
+</details>
+
+Prefer formatting/interpolating strings using _f-strings_.
+
+<details style='padding: 0 0 1rem 1rem'>
+
+```py
+f"Hello, {name}. You are {age}."
+F"{name.lower()} is funny."
+```
+
+</details>
+
+Multiple instructions can be given in line when separated by `;`.
+
+<details style='padding: 0 0 1rem 1rem'>
+
+These are functionally the same:
+
+```py
+some_string = 'hello world'
+print(some_string)
+```
+
+```py
+some_string = 'hello world' ; print(some_string)
+```
+
+</details>
+
+`except` clauses may name multiple exceptions as a parenthesized tuple
+
+<details style='padding: 0 0 1rem 1rem'>
+
+```py
+try: pass
+except (IDontLikeYouException, YouAreBeingMeanException) as e: raise
+```
+
+</details>
+
+_[Virtual environments]_ allow managing dependencies separately for different projects.<br/>
+Prefer giving each project its own, private, virtual environment.
+
+Generic notes:
+
+```py
+# Make iterables immutable
+an_immutable_iterable = frozenset(some_mutable_iterable)
 
 # Get lengths
 print(len(a_list))
@@ -80,9 +193,7 @@ kwargs = None  # deletes the value, and lets the garbage collector take care of 
 del kwargs     # deletes the variable's reference immediately
 
 # Ask users for input
-print("Enter your name:")
-name = input()
-print(f"Hello {name}")
+print("Enter your name:") ; name = input() ; print(f"Hello {name}")
 
 # Sort lists
 orig_list.sort(key=lambda x: x.count, reverse=True)                # sort in place
@@ -97,7 +208,7 @@ custom_list = {*custom_list}
 print(f'type: {type(custom_list)}, content: {custom_list}')
 
 # Check a dictionary contains a key
-if 'key_name' in dictionary: pass
+if 'key_name' in dictionary: …
 
 # Provide a default value when a key does not exist in a dictionary
 dictionary.get('key_name', 42)
@@ -126,6 +237,12 @@ def function_name(): pass
 def function_with_arguments(arg1, arg2 = None): pass
 def function_with_type_hinting(arg1: str, arg2: bool | None = False) -> str | None: pass  # from 3.10
 
+# Avoid taking actions
+# … or writing code for the moment
+if 'key_name' in dictionary: pass
+def some_function(): pass
+class some_class: pass
+
 # Get function name from inside them
 def function_using_inspect():
     import inspect
@@ -134,7 +251,7 @@ def function_using_sys():
     import sys
     print(sys._getframe().f_code.co_name)  # -> 'function_using_sys'
 
-# Set logging per function
+# Configure logging per function
 def function_with_logging( log_level: str = 'WARN' ) -> None:
     import logging
     import sys
@@ -147,10 +264,6 @@ def function_with_logging( log_level: str = 'WARN' ) -> None:
     logger.addHandler(handler)
 
     logger.debug(vars())
-
-# `except` clauses may name multiple exceptions as a parenthesized tuple
-try: pass
-except (IDontLikeYouException, YouAreBeingMeanException) as e: raise
 ```
 
 Work with regular expressions:
@@ -183,35 +296,19 @@ def format_phone_number_old(phone: typing.Optional[str] = None): pass  # python 
 def format_phone_number(phone: str|None) -> None: pass                 # since python 3.10
 ```
 
-Generally:
-
-- `map()` =~ plain `for` loop =~ operation in constructor performance-wise.
-
-  <details style='padding: 0 0 1rem 1rem'>
-
-  See [When should I use a Map instead of a For Loop?].
-
-  ```sh
-  # tested with 3.11 and 3.12
-  $ python3 'experiments/performance-measuring.py'
-  plain for loop: 2.755201207997743
-  list constructor: 2.8492380419920664
-  map: 2.7811154999944847
-  ```
-
-  </details>
-
 ## Learning material
 
-- W3C's [Python tutorial][w3c python tutorial]
+- W3C's [Python tutorial][w3c python tutorial].
+- Python's official [documentation].
 
 Fast-track:
 
-1. Learn Object-Oriented Programming's basic concepts.
+1. Learn what is Object-Oriented Programming.<br/>
+   At least in its basic concepts.
 1. Read code made by others.<br/>
-   Goal: understand the code.
+   Goal: understand that code.
 1. Reimplement or improve existing pieces of code.<br/>
-   Goal: understand the reasoning behind the code.
+   Goal: understand the reasoning behind that code.
 1. Create small utilities for yourself.
 1. Grow your code in complexity.
 
@@ -327,16 +424,33 @@ pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
 | [tqdm]               | Simplified threading with progress bars                                  |
 | [typer]              | CLI applications                                                         |
 
-## Parallelization
+## Performances
+
+Generally:
+
+- `map()` =~ plain `for` loop =~ operation in constructor performance-wise.
+
+  <details style='padding: 0 0 1rem 1rem'>
+
+  See [When should I use a Map instead of a For Loop?].
+
+  ```sh
+  # tested with 3.11 and 3.12
+  $ python3 'experiments/performance-measuring.py'
+  plain for loop: 2.755201207997743
+  list constructor: 2.8492380419920664
+  map: 2.7811154999944847
+  ```
+
+  </details>
+
+
+### Parallelizing tasks
 
 TODO
 
 Refer [concurrent.futures] and [tqdm].<br/>
 See also [Using tqdm with concurrent.futures in Python].
-
-## Packaging
-
-TODO
 
 ## Plugin systems
 
@@ -347,6 +461,10 @@ Adding a new plugin is just a matter of dropping in a `.py` file using a decorat
 No need to manually update lists or registries.
 
 See the [experiment](./experiments/plugin_systems/self-registration_via_decorator/README.md).
+
+## Packaging applications
+
+TODO
 
 ## Further readings
 
@@ -378,6 +496,7 @@ See the [experiment](./experiments/plugin_systems/self-registration_via_decorato
 [virtual environments]: #virtual-environments
 
 <!-- Upstream -->
+[Documentation]: https://docs.python.org/
 [install packages in a virtual environment using pip and venv]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
 [venv — creation of virtual environments]: https://docs.python.org/3/library/venv.html
 

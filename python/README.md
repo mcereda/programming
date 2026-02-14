@@ -286,14 +286,21 @@ timestamp = datetime.fromtimestamp(float(matches.group('timestampz')), timezone.
 source_intl = re.sub(r'^\+?(39)?(?P<phoneNum>(0|2)\d+)', r'+39\g<phoneNum>', source) if source is not None else source
 ```
 
-Type hinting (since Python 3.5):
+Type hinting for functions (since Python 3.5):
 
 ```py
-dry_run: bool = True
-processed: int = 0
-source_name: str = 'test'
 def format_phone_number_old(phone: typing.Optional[str] = None): pass  # python 3.5 to 3.10
 def format_phone_number(phone: str|None) -> None: pass                 # since python 3.10
+```
+
+Working with time:
+
+```py
+from datetime import datetime
+today = datetime.today().strftime('%Y%m%d')
+
+# AWS format: '2026-02-12T10:29:37+00:00'
+datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
 ```
 
 ## Learning material
@@ -471,6 +478,7 @@ TODO
 - [Using tabulation in Python logging format]
 - [Python Virtual Environments: A Primer]
 - [mypy documentation]
+- [Browser Automation in Python: Playwright, Selenium & More]
 
 ### Sources
 
@@ -503,6 +511,7 @@ TODO
 <!-- Others -->
 [bitmath]: https://bitmath.readthedocs.io/en/latest/module.html
 [boto3]: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+[Browser Automation in Python: Playwright, Selenium & More]: https://www.glukhov.org/post/2026/02/playwright-vs-selenium-puppeteer-lambdatest-zenrows/
 [check if one dictionary is subset of other]: https://www.geeksforgeeks.org/python-check-if-one-dictionary-is-subset-of-other/
 [ciso8601]: https://pypi.org/project/ciso8601/
 [concurrent.futures]: https://docs.python.org/3/library/concurrent.futures.html

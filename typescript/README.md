@@ -157,6 +157,12 @@ anotherObjectsList.filter(aol => aol.port === 5432);
 
 // Remove undefined values from arrays.
 const cleanArray = originalArray.filter(item => item !== undefined);
+
+// Read files
+import * as fs from 'fs';
+import * as path from 'path';
+const filePath = path.join(__dirname, 'example.txt');
+const fileContent = fs.readFileSync(filePath, 'utf8');
 ```
 
 ## Learning resources
@@ -239,6 +245,7 @@ Refer [npm-link].
 - [Mastering Typescript Import from Path]
 - [Google TypeScript Style Guide]
 - [TypeScript Pick: Creating Optional Properties]
+- [Reading Files in TypeScript: A Comprehensive Guide]
 
 ### Sources
 
@@ -272,6 +279,7 @@ Refer [npm-link].
 [Java-Script How-Works]: https://howjavascriptworks.com/
 [mastering typescript import from path]: https://www.webdevtutor.net/blog/typescript-import-from-path
 [nullish coalescing: the ?? operator in typescript]: https://mariusschulz.com/blog/nullish-coalescing-the-operator-in-typescript
+[Reading Files in TypeScript: A Comprehensive Guide]: https://www.xjavascript.com/blog/typescript-read-file/
 [remove duplicates from array in typescript]: https://stackoverflow.com/questions/63322597/remove-duplicates-from-array-in-typescript#76633098
 [top 12 most useful typescript utility types]: https://timmousk.com/blog/typescript-utility-types/
 [typescript deep dive]: https://basarat.gitbook.io/typescript

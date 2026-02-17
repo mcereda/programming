@@ -141,8 +141,8 @@ Prefer formatting/interpolating strings using _f-strings_.
 <details style='padding: 0 0 1rem 1rem'>
 
 ```py
-f"Hello, {name}. You are {age}."
-F"{name.lower()} is funny."
+f"Hello, {name}. You are {age:03d} years old."
+F'{name.lower()} is funny.'
 ```
 
 </details>
@@ -428,7 +428,7 @@ pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
 | [psycopg]            | Interact with PostgreSQL databases                                       |
 | [selenium]           | Automate browser windows                                                 |
 | [tabulate]           | Pretty-print tabular data                                                |
-| [tqdm]               | Simplified threading with progress bars                                  |
+| [tqdm]               | Simplified parallelization using [concurrent.futures] and progress bars  |
 | [typer]              | CLI applications                                                         |
 
 ## Performances

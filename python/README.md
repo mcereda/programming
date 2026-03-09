@@ -10,6 +10,7 @@
 1. [Modules of interest](#modules-of-interest)
 1. [Performances](#performances)
    1. [Parallelizing tasks](#parallelizing-tasks)
+   1. [Lazy formatting](#lazy-formatting)
 1. [Plugin systems](#plugin-systems)
    1. [Self-registration via decorator](#self-registration-via-decorator)
 1. [Packaging applications](#packaging-applications)
@@ -22,7 +23,8 @@ Object-oriented programming language. Everything in Python is an _object_.<br/>
 Objects are instances of what _classes_ define.
 
 `#` starts a comment from that point to the end of the line.<br/>
-`"""` start and close a multiline comment.
+`"""` start and close string literals. Standalone string literals are commonly used for multiline comments and
+documentation.
 
 <details style='padding: 0 0 1rem 1rem'>
 
@@ -30,8 +32,8 @@ Objects are instances of what _classes_ define.
 # this only lasts one line
 
 """
-this is a multiline comment
-mostly used for documentation
+use standalone string literals for multiline comments
+mostly suited for documentation
 """
 ```
 
@@ -108,12 +110,12 @@ type(the_null_value)            # -> <class 'NoneType'>
 type(a_boolean)                 # -> <class 'bool'>
 type(a_string)                  # -> <class 'str'>
 type(an_integer)                # -> <class 'int'>
-type(2a_floating_point_number)  # -> <class 'float'>
+type(a_floating_point_number)   # -> <class 'float'>
 type(a_complex_number)          # -> <class 'complex'>
 type(a_list)                    # -> <class 'list'>
 type(a_tuple)                   # -> <class 'tuple'>
 type(a_set)                     # -> <class 'set'>
-type(a_dict)                    # -> <class 'dict'>
+type(a_dictionary)              # -> <class 'dict'>
 
 
 # Convert between types
@@ -124,7 +126,7 @@ int(2.8)                              # -> 2
 int('10')                             # -> 10
 float(28)                             # -> 28.0
 float('42')                           # -> 42.0
-complex(21)                           # -> (2+0j)
+complex(21)                           # -> (21+0j)
 str(False)                            # -> 'False'
 str(1)                                # -> '1'
 list(("apple", "banana", "cherry"))   # -> ['apple', 'banana', 'cherry']
@@ -189,7 +191,7 @@ print(len(a_list))
 print(len(a_dict))
 
 # Unset variables
-kwargs = None  # deletes the value, and lets the garbage collector take care of memory from here
+kwargs = None  # rebinds the variable, and lets the garbage collector take care of memory from here
 del kwargs     # deletes the variable's reference immediately
 
 # Ask users for input
@@ -227,7 +229,7 @@ print(locals())
 
 # Get values from environment variables
 import os
-print(os.environ('HOME'))
+print(os.environ['HOME'])
 print(os.environ.get('LOG_LEVEL', default=logging.INFO))
 print(os.getenv('GITLAB_TOKEN'))
 print(os.getenv('AWS_PROFILE', default='default'))
@@ -305,7 +307,7 @@ datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
 
 ## Learning material
 
-- W3C's [Python tutorial][w3c python tutorial].
+- W3CSchools' [Python tutorial][w3cschools python tutorial].
 - Python's official [documentation].
 
 Fast-track:
@@ -357,7 +359,7 @@ This:
 1. Places a `pyvenv.cfg` file in the environment's directory, with the `home` key pointing to the Python installation
    used to create the environment.
 1. Creates a `bin` (`Scripts` on Windows) subdirectory, containing a copy (or symlink) of the Python executable.
-1. Creates a `lib/pythonX.Y/site-packages` subdirectory (`Libsite-packages` on Windows).
+1. Creates a `lib/pythonX.Y/site-packages` subdirectory (`Lib\site-packages` on Windows).
 1. Invokes `ensurepip` to bootstrap `pip` into the virtual environment, unless the `--without-pip` option is given.
 
 If the virtual environment's directory already exists, it will be re-used.<br/>
@@ -459,6 +461,52 @@ TODO
 Refer [concurrent.futures] and [tqdm].<br/>
 See also [Using tqdm with concurrent.futures in Python].
 
+### Lazy formatting
+
+Defers string formatting until it's actually needed.
+
+Some modules (e.g. `lazy_object_proxy` and `logging`) allow deferring any computation, _including_ string formatting,
+until the result is accessed.<br/>
+F-strings and the `.format()` function are eager and interpolate the string immediately.
+
+Modules supporting lazy formatting encourage users to pass the string's template and arguments separately.<br/>
+The handler, then, only performs the string interpolation if the string is actually printed out.
+
+<details style='padding: 0 0 1rem 1rem'>
+  <summary>Example: <code>logging</code></summary>
+
+```diff
+- logging.debug(f"Processing item {item_id} with value {value}")
++ logging.debug("Processing item %s with value %s", item_id, value)
+```
+
+Unless the log level is set to `DEBUG`, this debug message is never formatted.
+
+</details>
+
+The performance difference is negligible for simple variables like integers or strings.<br/>
+If arguments involve expensive operations, e.g. calling `repr()` on large objects, serializing data, or computing
+values just for a log message, the lazy approach avoids that cost entirely when the string is not accessed.
+
+Python does evaluate function arguments before the call, but it is the logging module itself that decides whether to
+combine the template and values if one is passing them separately.
+
+An alternative is to wrap expensive computations in an object whose `__str__` function is only called when needed.
+
+<details style='padding: 0 0 1rem 1rem'>
+
+```py
+class LazyFormat:
+    def __init__(self, func):
+        self.func = func
+    def __str__(self):
+        return self.func()
+
+logging.debug("Expensive result: %s", LazyFormat(lambda: costly_computation()))
+```
+
+</details>
+
 ## Plugin systems
 
 ### Self-registration via decorator
@@ -535,5 +583,5 @@ TODO
 [typer]: https://github.com/fastapi/typer
 [using tabulation in python logging format]: https://stackoverflow.com/questions/2777169/using-tabulation-in-python-logging-format#26145642
 [using tqdm with concurrent.futures in python]: https://rednafi.com/python/tqdm_progressbar_with_concurrent_futures/
-[w3c python tutorial]: https://www.w3schools.com/python
+[w3cschools python tutorial]: https://www.w3schools.com/python
 [when should i use a map instead of a for loop?]: https://stackoverflow.com/questions/1975250/when-should-i-use-a-map-instead-of-a-for-loop

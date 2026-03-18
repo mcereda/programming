@@ -73,6 +73,9 @@ interface Point2D {
 let point2D: Point2D = { x: 0, y: 10 };
 function iTakePoint2D(point: Point2D) { /* do something */ };
 
+// Get var type.
+console.log(typeof foo);
+
 // Ternary operator.
 // (condition) ? valueIfTrue : valueIfFalse
 const key = dict.has(key) ? dict.get(key)! : 'default';
@@ -172,9 +175,9 @@ const fileContent = fs.readFileSync(filePath, 'utf8');
 
 ## Libraries of interest
 
-| Library | Summary                  |
-| ------- | ------------------------ |
-| [yaml]  | Parse and stringify YAML |
+| Library       | Summary                  |
+| ------------- | ------------------------ |
+| [eemeli/yaml] | Parse and stringify YAML |
 
 
 ## Best practices
@@ -246,6 +249,7 @@ Refer [npm-link].
 - [Google TypeScript Style Guide]
 - [TypeScript Pick: Creating Optional Properties]
 - [Reading Files in TypeScript: A Comprehensive Guide]
+- [How to Get a Variable Type in TypeScript]
 
 ### Sources
 
@@ -270,10 +274,12 @@ Refer [npm-link].
 <!-- Others -->
 [contributors coding guidelines]: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
 [deep-equal]: https://www.npmjs.com/package/deep-equal
+[eemeli/yaml]: https://github.com/eemeli/yaml/
 [google typescript style guide]: https://google.github.io/styleguide/tsguide.html
 [How do I get the path to the current script with Node.js?]: https://stackoverflow.com/questions/3133243/how-do-i-get-the-path-to-the-current-script-with-node-js#3133313
 [how to add an item to an array in typescript if not undefined]: https://www.webdevtutor.net/blog/typescript-add-item-to-array-if-not-undefined
 [how to break a string into multiple lines in typescript]: https://www.webdevtutor.net/blog/typescript-break-string-into-multiple-lines
+[How to Get a Variable Type in TypeScript]: https://www.geeksforgeeks.org/typescript/how-to-get-a-variable-type-in-typescript/
 [how to initialize an empty typed object in typescript?]: https://timmousk.com/blog/typescript-empty-object/
 [How to Search an Array of Objects by Property in TypeScript?]: https://pythonguides.com/search-an-array-of-objects-by-property-in-typescript/
 [Java-Script How-Works]: https://howjavascriptworks.com/
@@ -284,4 +290,3 @@ Refer [npm-link].
 [top 12 most useful typescript utility types]: https://timmousk.com/blog/typescript-utility-types/
 [typescript deep dive]: https://basarat.gitbook.io/typescript
 [typescript pick: creating optional properties]: https://howjavascriptworks.com/typescript-pick/
-[yaml]: https://github.com/eemeli/yaml/

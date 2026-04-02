@@ -10,33 +10,32 @@
 
 ## TL;DR
 
-TypeScript is intentionally and strictly a superset of JavaScript with optional Type checking.<br/>
-It compiles into JavaScript, so JavaScript is what one is _actually_ going to execute.
+_Strongly typed_ programming language that _builds on_ and _converts to_ JavaScript.<br/>
+_Intentionally_ and _strictly_ a superset of JavaScript that adds _optional_ type checking.
 
-TypeScript:
+Runs _as JavaScript_ everywhere JavaScript can execute.<br/>
+Provides planned features from _future_ JavaScript editions to current JavaScript engines.<br/>
+Tries to protect the user from nonsensical portions of JavaScript that never worked.
 
-- Provides an _optional_ type system for JavaScript with compile time type safety.<br/>
-  Types are completely optional and inferred if not explicitly specified, and (working) js code compiles correctly with
-  TypeScript as-is.
-- Provides planned features from future JavaScript editions to current JavaScript engines.
-- Tries to protect the user from nonsensical portions of JavaScript that never worked.
+<details style='padding: 0 0 1rem 1rem'>
 
-  <details>
+```ts
+[] + [];      // JavaScript: "", TypeScript: Error
+{} + [];      // JS: 0, TS: Error
+[] + {};      // JS: "[object Object]", TS: Error
+{} + {};      // JS: NaN or [object Object][object Object], TS: Error
+"hello" - 1;  // JS: NaN, TS: Error
 
-  ```ts
-  [] + [];      // JavaScript: "", TypeScript: Error
-  {} + [];      // JS: 0, TS: Error
-  [] + {};      // JS: "[object Object]", TS: Error
-  {} + {};      // JS: NaN or [object Object][object Object], TS: Error
-  "hello" - 1;  // JS: NaN, TS: Error
+function add(a,b) {
+    return
+        a + b;  // JS: undefined, TS: Error: 'unreachable code detected'
+}
+```
 
-  function add(a,b) {
-      return
-          a + b;  // JS: undefined, TS: Error: 'unreachable code detected'
-  }
-  ```
+</details>
 
-  </details>
+Types are completely optional, _inferred_ if not explicitly specified, and JS code compiles correctly with TypeScript
+as-is.
 
 `undefined` specifies something hasn't been initialized.<br/>
 `null` specifies something is currently unavailable.
@@ -166,6 +165,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 const filePath = path.join(__dirname, 'example.txt');
 const fileContent = fs.readFileSync(filePath, 'utf8');
+
+// Sort lists of objects by object attribute
+[{name: "someValue"},{name: "otherValue"}].sort((a, b) => (a.name < b.name ? -1 : 1))
 ```
 
 ## Learning resources

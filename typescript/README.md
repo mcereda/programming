@@ -177,10 +177,10 @@ const fileContent = fs.readFileSync(filePath, 'utf8');
 
 ## Libraries of interest
 
-| Library       | Summary                  |
-| ------------- | ------------------------ |
-| [eemeli/yaml] | Parse and stringify YAML |
-
+| Library               | Summary                              |
+| --------------------- | ------------------------------------ |
+| [ds300/patch-package] | Automatically patch npm dependencies |
+| [eemeli/yaml]         | Parse and stringify YAML             |
 
 ## Best practices
 
@@ -276,6 +276,7 @@ Refer [npm-link].
 <!-- Others -->
 [contributors coding guidelines]: https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
 [deep-equal]: https://www.npmjs.com/package/deep-equal
+[ds300/patch-package]: https://github.com/ds300/patch-package
 [eemeli/yaml]: https://github.com/eemeli/yaml/
 [google typescript style guide]: https://google.github.io/styleguide/tsguide.html
 [How do I get the path to the current script with Node.js?]: https://stackoverflow.com/questions/3133243/how-do-i-get-the-path-to-the-current-script-with-node-js#3133313

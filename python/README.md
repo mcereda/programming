@@ -305,6 +305,12 @@ today = datetime.today().strftime('%Y%m%d')
 datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
 ```
 
+Verify a script's syntax is correct:
+
+```sh
+python3 -m 'py_compile' 'path/to/app.py'
+```
+
 ## Learning material
 
 - W3CSchools' [Python tutorial][w3cschools python tutorial].

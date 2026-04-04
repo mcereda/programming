@@ -42,7 +42,7 @@ def delete_old_objects(
         logger.warning('No prefix given, this will operate on the entire bucket')
 
     actionable_date_limit = datetime.now(UTC) - timedelta(days=days_to_retain_all_objects)
-    logger.info(f'acting on objects last modified before {actionable_date_limit.strftime(format='%F at %T')}')
+    logger.info('acting on objects last modified before %s', actionable_date_limit.strftime(format='%F at %T'))
 
     # get all objects
     # the client uses pagination, requiring to use the paginator
@@ -57,14 +57,14 @@ def delete_old_objects(
     objects = []
     for obj in iterator:
         objects.extend(obj['Contents'])
-    logger.info(f'found {len(objects)} objects')
-    logger.debug(f'objects: {objects}')
+    logger.info('found %d objects', len(objects))
+    logger.debug('objects: %s', objects)
     # sorting by date will make things easier later
     # ascending or descending does not really matter
     # sort ascending just to use list[0] instead of list[-1] to grab the newest object
     objects.sort(key=lambda obj:obj['LastModified'], reverse=True)
-    logger.info(f'objects sorted by last modified date (older to newer)')
-    logger.debug(f'sorted objects: {objects}')
+    logger.info('objects sorted by last modified date (older to newer)')
+    logger.debug('sorted objects: %s', objects)
 
     # lock the original list of objects down
     # I do know who I'm dealing with
@@ -72,16 +72,16 @@ def delete_old_objects(
 
     # filter out directories
     actionable_objects = [obj for obj in objects if not obj['Key'].endswith('/')]
-    logger.info(f'found {len(actionable_objects)} actionable objects')
-    logger.debug(f'actionable objects: {actionable_objects}')
+    logger.info('found %d actionable objects', len(actionable_objects))
+    logger.debug('actionable objects: %s', actionable_objects)
 
     # filter out objects last modified in the last x days to keep
     # filtering from the iterator using iterator.search and a jmespath query would have been the easiest option
     # … but yeah, jmespath queries, thanks but nah thanks
     actionable_objects = [obj for obj in actionable_objects if obj['LastModified'] < actionable_date_limit]
-    logger.info(f'filtered out objects modified in the last {days_to_retain_all_objects} days')
-    logger.info(f'actionable objects reduced to {len(actionable_objects)}')
-    logger.debug(f'actionable objects: {actionable_objects}')
+    logger.info('filtered out objects modified in the last %d days', days_to_retain_all_objects)
+    logger.info('actionable objects reduced to %d', len(actionable_objects))
+    logger.debug('actionable objects: %s', actionable_objects)
 
     # filter out 1 object per year to keep
     # objects are ordered from the oldest to the most recent => grouping by year, the latest in each group set will be
@@ -89,10 +89,10 @@ def delete_old_objects(
     for k, v in groupby(actionable_objects, key = lambda obj: obj['LastModified'].isocalendar().year):
         objects_by_year = list(v)
         actionable_objects.remove(objects_by_year[0])
-        logger.info(f'filtered out object to keep for year {k}')
-        logger.debug(f'filtered out object: {objects_by_year[0]}')
-    logger.info(f'actionable objects reduced to {len(actionable_objects)}')
-    logger.debug(f'actionable objects: {actionable_objects}')
+        logger.info('filtered out object to keep for year %d', k)
+        logger.debug('filtered out object: %s', objects_by_year[0])
+    logger.info('actionable objects reduced to %d', len(actionable_objects))
+    logger.debug('actionable objects: %s', actionable_objects)
 
     # filter out 1 object per week to keep
     # the requirement being 1y, no need to do this per year *and*, per week
@@ -100,18 +100,18 @@ def delete_old_objects(
     for k, v in groupby(actionable_objects, key = lambda obj: obj['LastModified'].isocalendar().week):
         objects_by_week = list(v)
         actionable_objects.remove(objects_by_week[0])
-        logger.info(f'filtered out object to keep for week {k}')
-        logger.debug(f'filtered out object: {objects_by_week[0]}')
-    logger.info(f'actionable objects reduced to {len(actionable_objects)}')
-    logger.debug(f'actionable objects: {actionable_objects}')
+        logger.info('filtered out object to keep for week %d', k)
+        logger.debug('filtered out object: %s', objects_by_week[0])
+    logger.info('actionable objects reduced to %d', len(actionable_objects))
+    logger.debug('actionable objects: %s', actionable_objects)
 
     # lock the list of actionable objects down
     # I do know who I'm dealing with
     actionable_objects = tuple(actionable_objects)
 
     retained_objects = tuple(obj for obj in objects if obj not in actionable_objects)
-    logger.info(f'retained {len(retained_objects)} objects')
-    logger.debug(f'retained objects: {retained_objects}')
+    logger.info('retained %d objects', len(retained_objects))
+    logger.debug('retained objects: %s', retained_objects)
 
     # use one bulk request, it makes no sense to call it once per object
     # bulk requests can sustain up to 1000 objects at a time => send requests with batches
@@ -124,8 +124,8 @@ def delete_old_objects(
                 print(f'Batch skipped')
                 continue
         if dry_run:
-            logger.info(f'faked deleting {len(batch)} objects in this batch')
-            logger.debug(f'supposedly deleted objects in batch: {batch}')
+            logger.info('faked deleting %d objects in this batch', len(batch))
+            logger.debug('supposedly deleted objects in batch: %s', batch)
             deleted_objects.extend(batch)
         else:
             response = client.delete_objects(
@@ -135,10 +135,10 @@ def delete_old_objects(
                     'Quiet': delete_quietly,
                 },
             )
-            logger.debug(f'response: {response}')
-            logger.info(f'deletion returned code {response['ResponseMetadata']['HTTPStatusCode']}')
-            logger.info(f'deleted {len(response['Deleted'])} objects in this batch')
-            logger.debug(f'deleted objects in batch: {response['Deleted']}')
+            logger.debug('response: %s', response)
+            logger.info('deletion returned code %d', response['ResponseMetadata']['HTTPStatusCode'])
+            logger.info('deleted %d objects in this batch', len(response['Deleted']))
+            logger.debug('deleted objects in batch: %s', response['Deleted'])
             deleted_objects.extend(response['Deleted'])
 
     for obj in retained_objects:

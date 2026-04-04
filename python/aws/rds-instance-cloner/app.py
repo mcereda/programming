@@ -45,7 +45,7 @@ def _change_rds_db_instance_master_user_password(
         MasterUserPassword   = master_user_password,
         ApplyImmediately     = True,
     )
-    logger.debug(f"Response: {response}")
+    logger.debug("Response: %s", response)
 
     return response
 
@@ -67,7 +67,7 @@ def _describe_rds_db_instance(
     response = rds.describe_db_instances(
         DBInstanceIdentifier = db_instance_identifier,
     )
-    logger.debug(f"Response: {response}")
+    logger.debug("Response: %s", response)
 
     assert len(response["DBInstances"]) == 1, "Got more than the expected single RDS DB instance"
     return response["DBInstances"][0]
@@ -90,7 +90,7 @@ def _describe_rds_db_snapshots_for_instance(
     response = rds.describe_db_snapshots(
         DBInstanceIdentifier = db_instance_identifier,
     )
-    logger.debug(f"Response: {response}")
+    logger.debug("Response: %s", response)
 
     return response
 
@@ -113,16 +113,16 @@ def _restore_rds_db_instance_from_snapshot(
 
     response = {}
     if dry_run is True:
-        logger.info(f"Faking restoring RDS DB snapshot {db_snapshot_identifier} as DB instance {db_instance_identifier}")
+        logger.info("Faking restoring RDS DB snapshot %s as DB instance %s", db_snapshot_identifier, db_instance_identifier)
         response["DBInstanceIdentifier"] = db_instance_identifier
         response["DBInstanceStatus"] = "available"
     else:
-        logger.info(f"Restoring RDS DB snapshot {db_snapshot_identifier} as DB instance {db_instance_identifier}")
+        logger.info("Restoring RDS DB snapshot %s as DB instance %s", db_snapshot_identifier, db_instance_identifier)
         response = rds.restore_db_instance_from_db_snapshot(
             DBInstanceIdentifier = db_instance_identifier,
             DBSnapshotIdentifier = db_snapshot_identifier,
         )
-        logger.debug(f"Response: {response}")
+        logger.debug("Response: %s", response)
         _wait_for_rds_db_instance_to_be_in_status_available(db_instance_identifier)
 
     return response
@@ -148,10 +148,10 @@ def _restore_rds_db_instance_to_point_in_time_restore(
 
     response = {}
     if dry_run is True:
-        logger.info(f"Faking restoring RDS DB instance {source_db_instance_identifier} to point in time as {target_db_instance_identifier}")
+        logger.info("Faking restoring RDS DB instance %s to point in time as %s", source_db_instance_identifier, target_db_instance_identifier)
         response["DBInstanceStatus"] = "available"
     else:
-        logger.info(f"Restoring RDS DB instance {source_db_instance_identifier} to point in time as {target_db_instance_identifier}")
+        logger.info("Restoring RDS DB instance %s to point in time as %s", source_db_instance_identifier, target_db_instance_identifier)
         args = {
             "SourceDBInstanceIdentifier": source_db_instance_identifier,
             "TargetDBInstanceIdentifier": target_db_instance_identifier,
@@ -162,7 +162,7 @@ def _restore_rds_db_instance_to_point_in_time_restore(
         else:
             args["UseLatestRestorableTime"] = use_latest_restorable_time
         response = rds.restore_db_instance_to_point_in_time(**args)
-        logger.debug(f"Response: {response}")
+        logger.debug("Response: %s", response)
         _wait_for_rds_db_instance_to_be_in_status_available(target_db_instance_identifier)
 
     return response
@@ -212,18 +212,18 @@ def clone_rds_db_instance(
             method = "snapshot"
 
     if method.lower() in ["pitr"]:
-        logger.info(f"Cloning RDS DB instance via Point-in-Time Restore (PITR)")
+        logger.info("Cloning RDS DB instance via Point-in-Time Restore (PITR)")
         _restore_rds_db_instance_to_point_in_time_restore(
             source_db_instance_identifier = source_db_instance_identifier,
             target_db_instance_identifier = clone_db_instance_identifier,
             use_latest_restorable_time    = True,
         )
     else:
-        logger.info(f"Getting the RDS DB instance's snapshots")
+        logger.info("Getting the RDS DB instance's snapshots")
         snapshots = _describe_rds_db_snapshots_for_instance(
             db_instance_identifier = source_db_instance_identifier,
         )
-        logger.info(f"Cloning RDS DB instance using its latest snapshot")
+        logger.info("Cloning RDS DB instance using its latest snapshot")
         _restore_rds_db_instance_from_snapshot(
             db_instance_identifier = clone_db_instance_identifier,
             db_snapshot_identifier = "",  # FIXME

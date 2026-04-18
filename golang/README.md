@@ -6,7 +6,7 @@
 1. [Working with Git repositories](#working-with-git-repositories)
 1. [Non-default module repositories](#non-default-module-repositories)
 1. [Troubleshooting](#troubleshooting)
-   1. [Applications have trouble performing as expected on Kubernetes](#applications-have-trouble-performing-as-expected-on-kubernetes)
+   1. [Containerized applications have trouble performing as expected](#containerized-applications-have-trouble-performing-as-expected)
 1. [Further readings](#further-readings)
    1. [Sources](#sources)
 
@@ -212,15 +212,17 @@ This includes using *private* repositories.
 
 ## Troubleshooting
 
-### Applications have trouble performing as expected on Kubernetes
+### Containerized applications have trouble performing as expected
 
 By default, Golang sets the `GOMAXPROCS` environment variable (the number of OS threads for Go code execution) **to the
-number of available CPUs on the node running the Pod**.<br/>
-This is **different** from the amount of resources the Pod is allocated when a CPU limit is set in the Pod's
-specification, and the Go scheduler might try to run more or less threads than the application has CPU time for.
+number of available CPUs on the node running the application**.<br/>
+This is **different** from the amount of resources a container or K8S pod is allocated when one sets a CPU limit in the
+pod's specification, and the Go scheduler might try to run more or less threads than the application has CPU time for.
+A container allocated with 0.25 vCPU on a 4-(v)CPU host starts with `GOMAXPROCS=4`, causing throttling and (if relevant,
+e.g. for EC2 instances) burning CPU credits.
 
-Properly set the `GOMAXPROCS` environment variable in the Pod's specification to match the limits imposed to the
-Pod.<br/>
+**Explicitly** set the `GOMAXPROCS` environment variable in the container or pod specification to match the limits
+imposed to them, or leverage [uber-go/automaxprocs] to set it automatically.<br/>
 If the CPU limit is less than `1000m` (1 CPU core), set `GOMAXPROCS=1`.
 
 ## Further readings
@@ -268,4 +270,5 @@ If the CPU limit is less than `1000m` (1 CPU core), set `GOMAXPROCS=1`.
 [golang channels simplified]: https://medium.com/@raotalha302.rt/golang-channels-simplified-060547830871
 [how do you get the current branch name?]: https://github.com/src-d/go-git/issues/1129
 [how to print struct variables in console]: https://stackoverflow.com/questions/24512112/how-to-print-struct-variables-in-console#24512194
+[uber-go/automaxprocs]: https://github.com/uber-go/automaxprocs
 [why goproxy matters and which to pick]: https://jfrog.com/blog/why-goproxy-matters-and-which-to-pick/

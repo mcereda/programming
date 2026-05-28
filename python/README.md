@@ -8,6 +8,7 @@
    1. [Installing packages in virtual environments](#installing-packages-in-virtual-environments)
    1. [Managing virtual environments](#managing-virtual-environments)
 1. [Modules of interest](#modules-of-interest)
+   1. [`logging`](#logging)
 1. [Performances](#performances)
    1. [Parallelizing tasks](#parallelizing-tasks)
    1. [Lazy formatting](#lazy-formatting)
@@ -423,21 +424,109 @@ pip freeze | sed 's/==/>=/' | xargs pip --require-virtualenv install --upgrade
 
 ## Modules of interest
 
-| Module               | Use cases                                                                |
-| -------------------- | ------------------------------------------------------------------------ |
-| [bitmath]            | Interact with file sizes in various units                                |
-| [boto3]              | Interact with AWS services                                               |
-| [ciso8601]           | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects |
-| [concurrent.futures] | Parallelization                                                          |
-| [dask]               | Parallel and distributed computing                                       |
-| [logging]            | Logging                                                                  |
-| [mypy]               | Static type checking                                                     |
-| [playwright]         | Automate browser windows                                                 |
-| [psycopg]            | Interact with PostgreSQL databases                                       |
-| [selenium]           | Automate browser windows                                                 |
-| [tabulate]           | Pretty-print tabular data                                                |
-| [tqdm]               | Simplified parallelization using [concurrent.futures] and progress bars  |
-| [typer]              | CLI applications                                                         |
+| Module               | Use cases                                                                        |
+| -------------------- | -------------------------------------------------------------------------------- |
+| [bitmath]            | Interact with file sizes in various units                                        |
+| [boto3]              | Interact with AWS services                                                       |
+| [ciso8601]           | Convert ISO8601 or RFC3339 datetime strings into Python datetime objects         |
+| [concurrent.futures] | Parallelization                                                                  |
+| [dask]               | Parallel and distributed computing                                               |
+| [logging]            | Logging                                                                          |
+| [mypy]               | Static type checking                                                             |
+| [playwright]         | Automate browser windows                                                         |
+| [psycopg]            | Interact with PostgreSQL databases                                               |
+| [rich]               | Terminal eye candy (progress bars, tables, markdown, syntax highlight, and more) |
+| [selenium]           | Automate browser windows                                                         |
+| [tabulate]           | Pretty-print tabular data                                                        |
+| [tqdm]               | Simplified parallelization using [concurrent.futures] and progress bars          |
+| [typer]              | CLI applications                                                                 |
+
+### `logging`
+
+This module organises loggers into an _implicit_ tree.<br/>
+Logger names are dot-separated. The parent of "a.b.c" is "a.b", whose parent is "a", whose parent is the _root_ logger.
+The root logger is the unnamed one that `logging.getLogger()` returns.
+
+Calling `logging.basicConfig(level=logging.INFO, stream=sys.stderr)` installs a `StreamHandler` on the root logger.
+
+A `StreamHandler` writes each record immediately as it's emitted.
+
+`callHandlers` is an internal method of the `Logger` class. One never calls it directly.
+It is the step that actually delivers the record when logging a message.
+It allows a message sent to a logger to reach a stream via _propagation_. It loops from the current logger up through
+its parents, calling `handler.handle(record)` at each node that has handlers and stopping only when it hits a logger
+with `propagate = False` or it runs out of parents to climb to. Records go to whatever handlers are attached there, and
+no further.
+
+<details style='padding: 0 1rem 1rem 1rem'>
+
+The chain that gets triggered when logging a message is as follows:
+
+logger.info(msg)
+  → checks isEnabledFor(INFO)    # level filter
+  → logger._log(INFO, msg)       # creates the LogRecord
+  → logger.handle(record)        # applies any filters on this logger
+  → logger.callHandlers(record)  # THIS: walks the parent chain
+
+```mermaid
+flowchart RL
+  A["logger.info(msg)"] --> B{"isEnabledFor(INFO)?"}
+  B -->|no| Z["no-op"]
+  B -->|yes| C["_log()\ncreate LogRecord"]
+  C --> D["handle()\napply logger-level filters"]
+  D --> E["callHandlers()\nc = self"]
+  E --> F["call each handler on c"]
+  F --> G{"c.propagate?"}
+  G -->|False| H["stop"]
+  G -->|True| I["c = c.parent"]
+  I --> J{"c is None?"}
+  J -->|yes| H
+  J -->|no| F
+```
+
+</details>
+
+One can use a _capture pattern_ to buffer output from one or more specific loggers without touching any other part of
+the tree.<br/>
+Useful for grouping output from parallel workers (mimicking what GNU parallel does when using `--group`).
+
+<details>
+  <summary>Example</summary>
+
+```py
+import io, logging
+
+def captured(fn, logger_name: str) -> tuple:
+    buf = io.StringIO()
+    handler = logging.StreamHandler(buf)
+    handler.setFormatter(logging.Formatter("%(levelname)s %(name)s: %(message)s"))
+    logger = logging.getLogger(logger_name)
+    propagate = logger.propagate
+    logger.addHandler(handler)
+    logger.propagate = False
+    try:
+        result = fn()
+    finally:
+        logger.removeHandler(handler)
+        logger.propagate = propagate
+    return result, buf.getvalue()
+```
+
+While `fn()` runs, every record emitted on that logger goes into the buffer instead of reaching root's handler.<br/>
+The caller gets the result and the accumulated output string, then decides when and where to write it.
+
+> [!important]
+> A logger's `propagate` attribute controls where records _travel_, but it has no effect on whether they are _produced_
+> at all.<br/>
+> A logger with `propagate = False` still inherits its effective level from the root logger, because the level filter
+> (`logger.isEnabledFor(someLevel)`, which calls `getEffectiveLevel()`) always walks the parent chain **regardless** of
+> `propagate`'s value. If root is set to `WARNING`, `logger.info(…)` is a no-op, and the buffer stays empty.
+
+Should `fn()` raise an exception, the logger **must** be restored to its original state.<br/>
+Without a `try/finally`, `propagate` stays `False` and the logger has **no** handler attached, making all subsequent
+logging from that logger silently disappear.
+
+</details>
 
 ## Performances
 
@@ -582,6 +671,7 @@ TODO
 [python module import: single-line vs multi-line]: https://stackoverflow.com/questions/15011367/python-module-import-single-line-vs-multi-line
 [python virtual environments: a primer]: https://realpython.com/python-virtual-environments-a-primer/
 [Python void return type annotation]: https://stackoverflow.com/questions/36797282/python-void-return-type-annotation
+[rich]: https://pypi.org/project/rich/
 [selenium]: https://pypi.org/project/selenium/
 [tabulate]: https://pypi.org/project/tabulate/
 [tqdm]: https://tqdm.github.io/

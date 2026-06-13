@@ -604,6 +604,24 @@ logging.debug("Expensive result: %s", LazyFormat(lambda: costly_computation()))
 
 ## Plugin systems
 
+The most common pattern in real Python projects is to use **explicit** imports in `__init__.py`:
+
+```sh
+# helpers/aws/__init__.py
+from .s3 import apply_backup_retention_schedule_to_s3_bucket
+from .iam import deactivate_iam_user
+from .cloudwatch import set_default_cloudwatch_log_group_retention
+from . import ecr
+```
+
+Explicit imports have the following advantages over a plugin system auto-discovering its components:
+
+- A reader knows the public API at a glance.
+- Import errors from one sub-module don't silently break unrelated callers.
+- IDEs and type checkers can resolve symbols without executing `__init__.py`.
+
+When the set of things to load is open-ended and **not** known at write time, the plugin system is a better choice.
+
 ### Self-registration via decorator
 
 Plugins manage themselves.<br/>
